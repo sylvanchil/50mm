@@ -13,6 +13,9 @@
 		3BC206FE1F20A9CF00CC511F /* _0mm.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3BC206FC1F20A9CF00CC511F /* _0mm.xcdatamodeld */; };
 		3BC207001F20A9CF00CC511F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BC206FF1F20A9CF00CC511F /* Assets.xcassets */; };
 		3BC207031F20A9CF00CC511F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3BC207011F20A9CF00CC511F /* LaunchScreen.storyboard */; };
+		3BEE38141F2283E900205BEC /* PhotoCaptureProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE38131F2283E900205BEC /* PhotoCaptureProcessor.swift */; };
+		3BEE38161F22995100205BEC /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE38151F22995100205BEC /* CameraController.swift */; };
+		3BEE38181F22A20D00205BEC /* CameraBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE38171F22A20D00205BEC /* CameraBrain.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +27,9 @@
 		3BC206FF1F20A9CF00CC511F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3BC207021F20A9CF00CC511F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3BC207041F20A9CF00CC511F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3BEE38131F2283E900205BEC /* PhotoCaptureProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCaptureProcessor.swift; sourceTree = "<group>"; };
+		3BEE38151F22995100205BEC /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
+		3BEE38171F22A20D00205BEC /* CameraBrain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraBrain.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +62,26 @@
 		3BC206F41F20A9CF00CC511F /* 50mm */ = {
 			isa = PBXGroup;
 			children = (
-				3BC206F51F20A9CF00CC511F /* AppDelegate.swift */,
+				3BC2070A1F20AB7B00CC511F /* 50 mm */,
 				3BC206F71F20A9CF00CC511F /* ViewController.swift */,
 				3BC206F91F20A9CF00CC511F /* Main.storyboard */,
+				3BEE38131F2283E900205BEC /* PhotoCaptureProcessor.swift */,
+				3BEE38151F22995100205BEC /* CameraController.swift */,
+				3BEE38171F22A20D00205BEC /* CameraBrain.swift */,
 				3BC206FF1F20A9CF00CC511F /* Assets.xcassets */,
+			);
+			path = 50mm;
+			sourceTree = "<group>";
+		};
+		3BC2070A1F20AB7B00CC511F /* 50 mm */ = {
+			isa = PBXGroup;
+			children = (
+				3BC206F51F20A9CF00CC511F /* AppDelegate.swift */,
 				3BC207011F20A9CF00CC511F /* LaunchScreen.storyboard */,
 				3BC207041F20A9CF00CC511F /* Info.plist */,
 				3BC206FC1F20A9CF00CC511F /* _0mm.xcdatamodeld */,
 			);
-			path = 50mm;
+			name = "50 mm";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,9 +157,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3BEE38141F2283E900205BEC /* PhotoCaptureProcessor.swift in Sources */,
 				3BC206F81F20A9CF00CC511F /* ViewController.swift in Sources */,
 				3BC206FE1F20A9CF00CC511F /* _0mm.xcdatamodeld in Sources */,
+				3BEE38181F22A20D00205BEC /* CameraBrain.swift in Sources */,
 				3BC206F61F20A9CF00CC511F /* AppDelegate.swift in Sources */,
+				3BEE38161F22995100205BEC /* CameraController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,6 +326,7 @@
 				3BC207091F20A9CF00CC511F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
