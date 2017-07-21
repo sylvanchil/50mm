@@ -16,7 +16,10 @@ class CameraController:NSObject{
     private var captureDevice :AVCaptureDevice!
     private var capturePhotoOutput = AVCapturePhotoOutput()
     
-    private var photoCaptureProcessor = PhotoCaptureProcessor()
+    //private var photoCaptureProcessor = PhotoCaptureProcessor()
+    private var cameraBrain = CameraBrain()
+    
+
     
     func prepareCamera(){
         captureSession.sessionPreset = AVCaptureSessionPresetPhoto
@@ -63,12 +66,10 @@ class CameraController:NSObject{
             
             UIViewLayer.layer.addSublayer(self.viewFinderLayer!)
         }
-
     }
     
     public func toggleFlash(){
         //should be in camerabrain
-        
         if captureDevice!.hasFlash{
             do{
                 try captureDevice!.lockForConfiguration()
@@ -85,7 +86,7 @@ class CameraController:NSObject{
         let photoSetting:AVCapturePhotoSettings =  AVCapturePhotoSettings()
         photoSetting.flashMode = captureDevice.isTorchActive ? AVCaptureFlashMode.on : AVCaptureFlashMode.off
         
-        capturePhotoOutput.capturePhoto(with: photoSetting, delegate: photoCaptureProcessor )
+        capturePhotoOutput.capturePhoto(with: photoSetting, delegate: cameraBrain )
     }
     
     
