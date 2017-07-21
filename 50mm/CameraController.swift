@@ -81,7 +81,10 @@ class CameraController:NSObject{
             }
         }
         
+        
     }
+    
+    
     public func captureImage(){
         let photoSetting:AVCapturePhotoSettings =  AVCapturePhotoSettings()
         photoSetting.flashMode = captureDevice.isTorchActive ? AVCaptureFlashMode.on : AVCaptureFlashMode.off
