@@ -16,12 +16,15 @@ class CameraController:NSObject{
     private var captureDevice :AVCaptureDevice!
     private var capturePhotoOutput = AVCapturePhotoOutput()
     
+    private var frameLineView: UIView?
+    
+    private var frameLineShapeLayer : CAShapeLayer?
+    
     //private var photoCaptureProcessor = PhotoCaptureProcessor()
     private var cameraBrain = CameraBrain()
     
-
-    
     func prepareCamera(){
+        cameraBrain.printDeviceName()
         captureSession.sessionPreset = AVCaptureSessionPresetPhoto
         if let availiableDevices = AVCaptureDeviceDiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaTypeVideo, position: .back).devices{
             captureDevice = availiableDevices.first
@@ -77,13 +80,34 @@ class CameraController:NSObject{
                 
                 captureDevice!.unlockForConfiguration()
             }catch{
-                
+        
             }
         }
-        
-        
     }
     
+    func drawFrameLineToUIView(to UIViewLayer: UIView){
+        frameLineView = UIView()
+        
+        if let frameLineView = frameLineView {
+            frameLineView.layer.borderColor = UIColor.yellow.cgColor
+            frameLineView.layer.opacity = 0.3
+            //frameLineView.lineDashPattern = [2, 2]
+            
+            //frameLineView.layer.transform = CATransform3DMakeRotation(CGFloat(-90.0 / 180.0 * .pi), 0.0, 0.0, 1.0)
+
+            frameLineView.layer.transform = CATransform3DScale(frameLineView.layer.transform, 0.85,0.85,0.85)
+            frameLineView.layer.transform = CATransform3DTranslate(frameLineView.layer.transform, -43.5, -33, 0)
+            
+            frameLineView.layer.transform = CATransform3DScale(frameLineView.layer.transform, 0.58,0.58,0.581)
+            
+            frameLineView.frame = UIViewLayer.bounds
+            frameLineView.layer.borderWidth = 3
+            
+            UIViewLayer.layer.addSublayer(frameLineView.layer)
+            
+        }
+    
+    }
     
     public func captureImage(){
         let photoSetting:AVCapturePhotoSettings =  AVCapturePhotoSettings()

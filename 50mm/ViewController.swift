@@ -30,6 +30,7 @@ class ViewController: UIViewController {
         cameraController.prepareCamera()
         cameraController.beginSession()
         cameraController.outputToUIView(to: capturePreview)
+        cameraController.drawFrameLineToUIView(to: capturePreview)
         // Do any additional setup after loading the view, typically from a nib.
     }
 
