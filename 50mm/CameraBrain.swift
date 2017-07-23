@@ -12,16 +12,13 @@ import UIKit
 import Photos
 
 class CameraBrain:NSObject{
-    //focal length
-    //flash setting
+   
     //raw, jpeg, raw+ jpeg
-    // exif info
+    //exif info
+    //flash setting
     //image orientation
     //capture success feedback
     //shorter launch time
-    //crop rate base on device
-
-    //omit prompt
     
     let lengthOfFilm = 36.0
     let widthOfFilm = 24.0
@@ -29,11 +26,11 @@ class CameraBrain:NSObject{
     private var defaultFocalLength = 0
     
     //origin 35 50
-    private var focalLengthIndex = 0
+    private var focalLengthIndex = 2
     //on or off
     private var flashMode = false
     //raw jpeg raw+jpeg
-    private var captureModeIndex = 0
+    private var captureModeIndex = 2
 
     private var deviceName :String?
     
@@ -84,6 +81,8 @@ class CameraBrain:NSObject{
         return tan( currAOV.angleH/2 * Double.pi / 180 ) / tan( defaultAOV.angleH/2 * Double.pi / 180)
     }
     
+    
+    
     public func nextOutputSetting(){
         captureModeIndex = (captureModeIndex+1)%3
     }
@@ -115,15 +114,21 @@ extension CameraBrain : AVCapturePhotoCaptureDelegate{
             let photoData = AVCapturePhotoOutput.jpegPhotoDataRepresentation(forJPEGSampleBuffer: photoSampleBuffer, previewPhotoSampleBuffer: previewPhotoSampleBuffer)
             let image = UIImage(data: photoData!)
             
-            let finalImage = image?.crop(rect: CGRect(x: 848, y: 636, width: 2336, height: 1752))
-            //let finalImage2 = finalImage?.fixImageOrientation()
+            let originWidth = Double((image?.cgImage?.width)!)
+            let originHeight = Double((image?.cgImage?.height)!)
+            
+            let width = originWidth * croppingRatio()
+            let height = originHeight * croppingRatio()
+            
+            let finalImage = image?.crop(rect: CGRect(x: originWidth/2 - width/2 , y: originHeight/2 - height/2
+                , width: width, height: height))
+ 
             UIImageWriteToSavedPhotosAlbum(finalImage!, nil, nil, nil)
         }
         
     }
     
 }
-
 
 extension UIImage {
     func crop( rect: CGRect) -> UIImage {

@@ -77,19 +77,7 @@ class CameraController:NSObject{
     }
     
     public func toggleFlash(){
-        //should be in camerabrain
-        /*
-        if captureDevice!.hasFlash{
-            do{
-                try captureDevice!.lockForConfiguration()
-                captureDevice!.torchMode = captureDevice.isTorchActive ? AVCaptureTorchMode.off: AVCaptureTorchMode.on
-                
-                captureDevice!.unlockForConfiguration()
-            }catch{
-        
-            }
-        }
- */
+
         cameraBrain.toggleFlash()
         
     }
@@ -127,32 +115,7 @@ class CameraController:NSObject{
         return cameraBrain.croppingRatio()
     }
     
-    /*
-    
-    func drawFrameLineToUIView(to UIViewLayer: UIView){
-        frameLineView = UIView()
-        
-        if let frameLineView = frameLineView {
-            frameLineView.layer.borderColor = UIColor.yellow.cgColor
-            frameLineView.layer.opacity = 0.3
-            //frameLineView.lineDashPattern = [2, 2]
-            
-            //frameLineView.layer.transform = CATransform3DMakeRotation(CGFloat(-90.0 / 180.0 * .pi), 0.0, 0.0, 1.0)
-            
-            frameLineView.layer.transform = CATransform3DScale(frameLineView.layer.transform, 0.85,0.85,0.85)
-            frameLineView.layer.transform = CATransform3DTranslate(frameLineView.layer.transform, -43.5, -33, 0)
-            
-            frameLineView.layer.transform = CATransform3DScale(frameLineView.layer.transform, 0.58,0.58,0.58)
-            
-            frameLineView.frame = UIViewLayer.bounds
-            frameLineView.layer.borderWidth = 3
-            
-            UIViewLayer.layer.addSublayer(frameLineView.layer)
-            
-        }
-        
-    }
- */
+
     private func defaultFocalLengthByDevice()->Int{
         let modelName = UIDevice.current.modelName
         
@@ -165,11 +128,7 @@ class CameraController:NSObject{
         default:
             return 0
         }
-        
-        
     }
-    
-    
 }
 
 
