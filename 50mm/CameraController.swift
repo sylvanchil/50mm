@@ -89,8 +89,8 @@ class CameraController:NSObject{
     
     public func captureImage(){
         let photoSetting:AVCapturePhotoSettings =  AVCapturePhotoSettings()
-        photoSetting.flashMode = captureDevice.isTorchActive ? AVCaptureFlashMode.on : AVCaptureFlashMode.off
         
+        photoSetting.flashMode = cameraBrain.flashIsOn() ? AVCaptureFlashMode.on : AVCaptureFlashMode.off
         capturePhotoOutput.capturePhoto(with: photoSetting, delegate: cameraBrain )
     }
     

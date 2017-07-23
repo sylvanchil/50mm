@@ -15,16 +15,19 @@ class CameraBrain:NSObject{
    
     //raw, jpeg, raw+ jpeg
     //exif info
-    //flash setting
     //image orientation
-    //capture success feedback
+    //review
+    
+    //3dtouch review
     //shorter launch time
+    //touch focus
+    
+    //capture success feedback
     
     let lengthOfFilm = 36.0
     let widthOfFilm = 24.0
     
     private var defaultFocalLength = 0
-    
     //origin 35 50
     private var focalLengthIndex = 2
     //on or off
@@ -111,6 +114,7 @@ extension CameraBrain : AVCapturePhotoCaptureDelegate{
     public func capture(_ captureOutput: AVCapturePhotoOutput, didFinishProcessingPhotoSampleBuffer photoSampleBuffer: CMSampleBuffer?, previewPhotoSampleBuffer: CMSampleBuffer?, resolvedSettings: AVCaptureResolvedPhotoSettings, bracketSettings: AVCaptureBracketedStillImageSettings?, error: Error?){
         
         if let photoSampleBuffer = photoSampleBuffer {
+            
             let photoData = AVCapturePhotoOutput.jpegPhotoDataRepresentation(forJPEGSampleBuffer: photoSampleBuffer, previewPhotoSampleBuffer: previewPhotoSampleBuffer)
             let image = UIImage(data: photoData!)
             
@@ -125,9 +129,7 @@ extension CameraBrain : AVCapturePhotoCaptureDelegate{
  
             UIImageWriteToSavedPhotosAlbum(finalImage!, nil, nil, nil)
         }
-        
     }
-    
 }
 
 extension UIImage {
