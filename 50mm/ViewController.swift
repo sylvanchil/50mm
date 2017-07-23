@@ -34,6 +34,8 @@ class ViewController: UIViewController {
     @IBAction func changeFocalLength(_ sender: UIButton) {
         cameraController.nextFocalLength()
         focalLengthIndicator.setTitle(String(cameraController.currentFocalLength()), for: .normal)
+        reloadFrameLine()
+        
     }
     @IBAction func toggleFlash(_ sender: Any) {
         cameraController.toggleFlash()
@@ -57,18 +59,27 @@ class ViewController: UIViewController {
 
     }
     
-    
+    func reloadFrameLine(){
+        if(abs(cameraController.getCroppingRatio()-1) < 0.01){
+            self.frameLineview.layer.opacity = 0
+        }else{
+            
+            self.frameLineview.layer.opacity = 0.2
+            let ratio = cameraController.getCroppingRatio()
+            
+            self.frameLineview.layer.transform = CATransform3DMakeScale(0.85,0.85,0.85)
+            //self.frameLineview.layer.transform = CATransform3DScale(frameLineview.layer.transform, 0.85,0.85,0.85)
+            self.frameLineview.layer.transform = CATransform3DTranslate(frameLineview.layer.transform, -43.5, -33, 0)
+            self.frameLineview.layer.transform = CATransform3DScale(frameLineview.layer.transform, CGFloat(ratio) ,CGFloat(ratio) ,CGFloat(ratio))
+            
+        }
+    }
     
     func addFrameLine(){
         self.frameLineview.layer.borderWidth = 4
         self.frameLineview.layer.borderColor = UIColor.orange.cgColor
-        self.frameLineview.layer.opacity = 0.2
+        reloadFrameLine()
         
-        self.frameLineview.layer.transform = CATransform3DMakeScale(0.85,0.85,0.85)
-        //self.frameLineview.layer.transform = CATransform3DScale(frameLineview.layer.transform, 0.85,0.85,0.85)
-        self.frameLineview.layer.transform = CATransform3DTranslate(frameLineview.layer.transform, -43.5, -33, 0)
-        
-        self.frameLineview.layer.transform = CATransform3DScale(frameLineview.layer.transform, 0.58,0.58,0.58)
     }
     
     override func viewDidLoad() {

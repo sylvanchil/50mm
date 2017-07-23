@@ -76,6 +76,13 @@ class CameraBrain:NSObject{
         }
     }
     
+    public func croppingRatio()->Double{
+        let defaultAOV = angleOfView(of: Double(defaultFocalLength))
+        
+        let currAOV = angleOfView(of: Double(self.currentFocalLength()))
+        
+        return tan( currAOV.angleH/2 * Double.pi / 180 ) / tan( defaultAOV.angleH/2 * Double.pi / 180)
+    }
     
     public func nextOutputSetting(){
         captureModeIndex = (captureModeIndex+1)%3

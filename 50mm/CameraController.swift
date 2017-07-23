@@ -123,6 +123,9 @@ class CameraController:NSObject{
         
     }
     
+    public func getCroppingRatio()->Double{
+        return cameraBrain.croppingRatio()
+    }
     
     /*
     
