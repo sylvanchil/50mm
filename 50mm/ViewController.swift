@@ -13,7 +13,6 @@ import Photos
 class ViewController: UIViewController {
     
     var cameraController = CameraController()
-    @IBOutlet weak var capturePreview: UIView!
     
     @IBAction func captureImage(_ sender: UIButton) {
         cameraController.captureImage()
@@ -24,6 +23,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var focalLengthIndicator: UIButton!
     @IBOutlet weak var flashStatus: UIButton!
     @IBOutlet weak var frameLineview: UIView!
+    
+    @IBOutlet weak var capturePreview: UIView!
     
     
     @IBAction func outputSetting(_ sender: UIButton) {
@@ -67,10 +68,12 @@ class ViewController: UIViewController {
             self.frameLineview.layer.opacity = 0.2
             let ratio = cameraController.getCroppingRatio()
             
-            self.frameLineview.layer.transform = CATransform3DMakeScale(0.85,0.85,0.85)
-            //self.frameLineview.layer.transform = CATransform3DScale(frameLineview.layer.transform, 0.85,0.85,0.85)
-            self.frameLineview.layer.transform = CATransform3DTranslate(frameLineview.layer.transform, -43.5, -33, 0)
-            self.frameLineview.layer.transform = CATransform3DScale(frameLineview.layer.transform, CGFloat(ratio) ,CGFloat(ratio) ,CGFloat(ratio))
+            //self.frameLineview.layer.transform = CATransform3DMakeScale(0.85,0.85,0.85)
+            //self.frameLineview.layer.transform = CATransform3DTranslate(frameLineview.layer.transform, -43.5, -33, 0)
+            
+            //self.frameLineview.layer.transform = CATransform3DScale(frameLineview.layer.transform, CGFloat(ratio) ,CGFloat(ratio) ,CGFloat(ratio))
+            
+            self.frameLineview.layer.transform = CATransform3DMakeScale(CGFloat(ratio) ,CGFloat(ratio) ,CGFloat(ratio))
             
         }
     }
@@ -88,6 +91,7 @@ class ViewController: UIViewController {
         cameraController.prepareCamera()
         cameraController.beginSession()
         cameraController.outputToUIView(to: capturePreview)
+        
         addFrameLine()
         reloadUI()
         

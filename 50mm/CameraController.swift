@@ -62,29 +62,27 @@ class CameraController:NSObject{
     }
     
     func outputToUIView(to UIViewLayer : UIView){
-        if let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession){
-            //messy shit here 
-            self.viewFinderLayer = previewLayer
-            self.viewFinderLayer?.frame = UIViewLayer.bounds
-            
-            self.viewFinderLayer?.transform = CATransform3DMakeRotation(CGFloat(-90.0 / 180.0 * .pi), 0.0, 0.0, 1.0)
-            self.viewFinderLayer?.transform = CATransform3DScale((self.viewFinderLayer?.transform)!, 1.14,1.14,1.14)
-            self.viewFinderLayer?.transform = CATransform3DTranslate((self.viewFinderLayer?.transform)!, 24, -33, 0)
-            
-            
-            UIViewLayer.layer.insertSublayer(self.viewFinderLayer!, at:0)
-        }
+        viewFinderLayer = AVCaptureVideoPreviewLayer(session:captureSession)
+        viewFinderLayer?.connection.videoOrientation = AVCaptureVideoOrientation.landscapeRight
+        
+        UIViewLayer.layer.insertSublayer(self.viewFinderLayer!, at:0)
+
+        let frameRect = UIViewLayer.superview?.layer.bounds
+        
+        viewFinderLayer?.frame = CGRect(x: -1, y: 0, width: (frameRect?.height)!/3*4+1, height: (frameRect?.height)!+1)
+        
+        print(viewFinderLayer?.frame.origin ?? 0)
+        print(viewFinderLayer?.frame.height ?? 0)
+        print(viewFinderLayer?.frame.width ?? 0)
+  
     }
     
     public func toggleFlash(){
-
         cameraBrain.toggleFlash()
-        
     }
     
     public func usingFlash()->Bool{
         return cameraBrain.flashIsOn() ? true : false
-        
     }
     
     public func captureImage(){
@@ -133,8 +131,6 @@ class CameraController:NSObject{
 
 
 public extension UIDevice {
-    
-
     var modelName: String {
         var systemInfo = utsname()
         uname(&systemInfo)

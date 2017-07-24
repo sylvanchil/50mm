@@ -13,6 +13,8 @@ import Photos
 
 class CameraBrain:NSObject{
    
+    //todo:
+    //image orientation
     //raw, jpeg, raw+ jpeg
     //exif info
     //image orientation
