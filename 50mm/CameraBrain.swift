@@ -12,19 +12,14 @@ import UIKit
 import Photos
 
 class CameraBrain:NSObject{
-   
-    //todo:
-    //image orientation
-    //raw, jpeg, raw+ jpeg
-    //exif info
-    //image orientation
-    //review
     
-    //3dtouch review
+    
+    //raw, jpeg, raw+ jpeg
+    
+    //capture success feedback
     //shorter launch time
     //touch focus
     
-    //capture success feedback
     
     let lengthOfFilm = 36.0
     let widthOfFilm = 24.0
@@ -86,8 +81,6 @@ class CameraBrain:NSObject{
         return tan( currAOV.angleH/2 * Double.pi / 180 ) / tan( defaultAOV.angleH/2 * Double.pi / 180)
     }
     
-    
-    
     public func nextOutputSetting(){
         captureModeIndex = (captureModeIndex+1)%3
     }
@@ -126,13 +119,17 @@ extension CameraBrain : AVCapturePhotoCaptureDelegate{
             let width = originWidth * croppingRatio()
             let height = originHeight * croppingRatio()
             
-            let finalImage = image?.crop(rect: CGRect(x: originWidth/2 - width/2 , y: originHeight/2 - height/2
+            var finalImage = image?.crop(rect: CGRect(x: originWidth/2 - width/2 , y: originHeight/2 - height/2
                 , width: width, height: height))
  
+            finalImage = UIImage(cgImage: (finalImage?.cgImage)!, scale: (finalImage?.scale)!, orientation: UIImageOrientation.up)
             UIImageWriteToSavedPhotosAlbum(finalImage!, nil, nil, nil)
+            
+            
         }
     }
 }
+
 
 extension UIImage {
     func crop( rect: CGRect) -> UIImage {

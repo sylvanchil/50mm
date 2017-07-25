@@ -11,17 +11,22 @@ import AVFoundation
 import UIKit
 
 class CameraController:NSObject{
+    
+    
     private var captureSession = AVCaptureSession()
     private var viewFinderLayer : AVCaptureVideoPreviewLayer?
     private var captureDevice :AVCaptureDevice!
     private var capturePhotoOutput = AVCapturePhotoOutput()
-    
     private var frameLineView: UIView?
     
     private var frameLineShapeLayer : CAShapeLayer?
     
     //private var photoCaptureProcessor = PhotoCaptureProcessor()
     private var cameraBrain = CameraBrain()
+    
+    private var lastPhotoTaken:UIImage?
+    
+    
     
     func prepareCamera(){
        // cameraBrain.printDeviceName()
@@ -61,19 +66,14 @@ class CameraController:NSObject{
         
     }
     
+    
+    
     func outputToUIView(to UIViewLayer : UIView){
         viewFinderLayer = AVCaptureVideoPreviewLayer(session:captureSession)
         viewFinderLayer?.connection.videoOrientation = AVCaptureVideoOrientation.landscapeRight
-        
         UIViewLayer.layer.insertSublayer(self.viewFinderLayer!, at:0)
-
         let frameRect = UIViewLayer.superview?.layer.bounds
-        
-        viewFinderLayer?.frame = CGRect(x: -1, y: 0, width: (frameRect?.height)!/3*4+1, height: (frameRect?.height)!+1)
-        
-        print(viewFinderLayer?.frame.origin ?? 0)
-        print(viewFinderLayer?.frame.height ?? 0)
-        print(viewFinderLayer?.frame.width ?? 0)
+        viewFinderLayer?.frame = CGRect(x: 0, y: 0, width: (frameRect?.height)!/3*4, height: (frameRect?.height)!)
   
     }
     
@@ -90,6 +90,8 @@ class CameraController:NSObject{
         
         photoSetting.flashMode = cameraBrain.flashIsOn() ? AVCaptureFlashMode.on : AVCaptureFlashMode.off
         capturePhotoOutput.capturePhoto(with: photoSetting, delegate: cameraBrain )
+        
+        
     }
     
     public func nextFocalLength(){

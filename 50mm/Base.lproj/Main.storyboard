@@ -51,10 +51,13 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="6KK-zJ-pAl" userLabel="rightStack">
-                                <rect key="frame" x="553.5" y="15" width="98.5" height="345"/>
+                                <rect key="frame" x="582" y="15" width="70" height="345"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YQa-Aa-kVP">
-                                        <rect key="frame" x="0.0" y="0.0" width="98.5" height="70"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="YQa-Aa-kVP" secondAttribute="height" multiplier="7:7" id="2zS-VG-ohY"/>
+                                        </constraints>
                                         <state key="normal" image="Image">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -63,7 +66,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zeC-ia-hTz">
-                                        <rect key="frame" x="0.0" y="122.5" width="98.5" height="90"/>
+                                        <rect key="frame" x="0.0" y="127.5" width="70" height="90"/>
                                         <fontDescription key="fontDescription" name="Copperplate" family="Copperplate" pointSize="44"/>
                                         <state key="normal" title="50" backgroundImage="mmBG">
                                             <color key="titleColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -72,13 +75,16 @@
                                             <action selector="changeFocalLength:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aRj-sA-eU6"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l1P-Pf-8g8">
-                                        <rect key="frame" x="0.0" y="265" width="98.5" height="80"/>
-                                        <state key="normal" image="playButton">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                    </button>
+                                    <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="testimage" translatesAutoresizingMaskIntoConstraints="NO" id="quS-Af-Xwb" userLabel="reviewThumbnail">
+                                        <rect key="frame" x="0.0" y="275" width="70" height="70"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="quS-Af-Xwb" secondAttribute="height" multiplier="1:1" id="v4v-yw-FhI"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="70" id="UIJ-iP-lup"/>
+                                </constraints>
                             </stackView>
                             <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="Zau-Fn-4Lq">
                                 <rect key="frame" x="38" y="0.0" width="500.5" height="375"/>
@@ -87,12 +93,21 @@
                                         <rect key="frame" x="0.0" y="0.0" width="500.5" height="375"/>
                                         <color key="tintColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QFF-Y4-707">
+                                        <rect key="frame" x="4.5" y="3" width="492" height="369"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="QFF-Y4-707" secondAttribute="height" multiplier="4:3" id="xM7-I6-MhK"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="QFF-Y4-707" firstAttribute="top" secondItem="Zau-Fn-4Lq" secondAttribute="top" constant="3" id="7Zx-xr-hcm"/>
                                     <constraint firstItem="y9u-Dk-3Kz" firstAttribute="top" secondItem="Zau-Fn-4Lq" secondAttribute="top" id="8Hw-Uu-v71"/>
+                                    <constraint firstAttribute="bottom" secondItem="QFF-Y4-707" secondAttribute="bottom" constant="3" id="DZJ-6s-BXJ"/>
                                     <constraint firstAttribute="bottom" secondItem="y9u-Dk-3Kz" secondAttribute="bottom" id="bOu-tL-NEY"/>
                                     <constraint firstAttribute="trailing" secondItem="y9u-Dk-3Kz" secondAttribute="trailing" id="cZh-hp-LA3"/>
+                                    <constraint firstAttribute="trailing" secondItem="QFF-Y4-707" secondAttribute="trailing" constant="4" id="coI-bv-P4r"/>
                                     <constraint firstAttribute="width" secondItem="Zau-Fn-4Lq" secondAttribute="height" multiplier="4:3" id="ioT-hy-OHU"/>
                                     <constraint firstItem="y9u-Dk-3Kz" firstAttribute="leading" secondItem="Zau-Fn-4Lq" secondAttribute="leading" id="iyD-Pm-v5a"/>
                                 </constraints>
@@ -107,7 +122,6 @@
                             <constraint firstItem="Zau-Fn-4Lq" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="PjM-c6-SB8"/>
                             <constraint firstItem="WDp-t6-gWx" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="RnA-qZ-KmR"/>
                             <constraint firstItem="6KK-zJ-pAl" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="15" id="Ygf-N7-uaI"/>
-                            <constraint firstItem="6KK-zJ-pAl" firstAttribute="leading" secondItem="Zau-Fn-4Lq" secondAttribute="trailing" constant="15" id="ahD-21-bap"/>
                             <constraint firstAttribute="bottom" secondItem="6KK-zJ-pAl" secondAttribute="bottom" constant="15" id="pxX-yo-6u0"/>
                             <constraint firstAttribute="trailing" secondItem="6KK-zJ-pAl" secondAttribute="trailing" constant="15" id="w3A-9i-AAF"/>
                             <constraint firstAttribute="bottom" secondItem="WDp-t6-gWx" secondAttribute="bottom" id="w9b-oC-bBa"/>
@@ -119,6 +133,8 @@
                         <outlet property="focalLengthIndicator" destination="zeC-ia-hTz" id="YL3-ku-MUW"/>
                         <outlet property="frameLineview" destination="y9u-Dk-3Kz" id="mcl-2Q-3CO"/>
                         <outlet property="outputSetting" destination="OI9-xl-CeI" id="Miw-9e-0YP"/>
+                        <outlet property="reviewLargeView" destination="QFF-Y4-707" id="Die-Hm-e8z"/>
+                        <outlet property="reviewThumbView" destination="quS-Af-Xwb" id="9jw-jT-675"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -130,6 +146,6 @@
         <image name="Image" width="70" height="70"/>
         <image name="mmBG" width="90" height="90"/>
         <image name="noflash" width="16" height="16"/>
-        <image name="playButton" width="80" height="80"/>
+        <image name="testimage" width="713" height="1024"/>
     </resources>
 </document>
