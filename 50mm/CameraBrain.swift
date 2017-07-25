@@ -30,7 +30,7 @@ class CameraBrain:NSObject{
     //on or off
     private var flashMode = false
     //raw jpeg raw+jpeg
-    private var captureModeIndex = 2
+    private var captureModeIndex = 1
 
     private var deviceName :String?
     
@@ -47,6 +47,8 @@ class CameraBrain:NSObject{
         }
     }
     
+    
+    
     public func setDefaultFocalLength(using focalLength:Int){
         defaultFocalLength = focalLength
     }
@@ -60,6 +62,14 @@ class CameraBrain:NSObject{
     public func flashIsOn()->Bool{
         return flashMode
     }
+    
+    
+    public func currentOutputSettingIndex()->Int{
+        return captureModeIndex
+    }
+
+    
+    
     public func currentOutputSetting()->String{
         switch captureModeIndex {
         case 0:
@@ -82,7 +92,17 @@ class CameraBrain:NSObject{
     }
     
     public func nextOutputSetting(){
-        captureModeIndex = (captureModeIndex+1)%3
+        if deviceName == nil{
+            deviceName = UIDevice.current.modelName
+        }
+        
+        if(deviceName == "iPhone 6s"
+            || deviceName == "iPhone 6s Plus"
+            || deviceName == "iPhone 7"
+            || deviceName == "iPhone 7 Plus"
+            || deviceName == "iPhone SE"){
+            captureModeIndex = (captureModeIndex+1)%3
+        }
     }
     
     public func nextFocalLength(){
@@ -105,6 +125,7 @@ struct angleOfViews{
     }
 }
 
+
 extension CameraBrain : AVCapturePhotoCaptureDelegate{
     public func capture(_ captureOutput: AVCapturePhotoOutput, didFinishProcessingPhotoSampleBuffer photoSampleBuffer: CMSampleBuffer?, previewPhotoSampleBuffer: CMSampleBuffer?, resolvedSettings: AVCaptureResolvedPhotoSettings, bracketSettings: AVCaptureBracketedStillImageSettings?, error: Error?){
         
@@ -125,9 +146,44 @@ extension CameraBrain : AVCapturePhotoCaptureDelegate{
             finalImage = UIImage(cgImage: (finalImage?.cgImage)!, scale: (finalImage?.scale)!, orientation: UIImageOrientation.up)
             UIImageWriteToSavedPhotosAlbum(finalImage!, nil, nil, nil)
             
-            
-        }
+            }
     }
+    func photoOutput(_ output: AVCapturePhotoOutput,
+    didFinishProcessingRawPhoto rawSampleBuffer: CMSampleBuffer?,
+    previewPhoto previewPhotoSampleBuffer: CMSampleBuffer?,
+    resolvedSettings: AVCaptureResolvedPhotoSettings,
+    bracketSettings: AVCaptureBracketedStillImageSettings?,
+    error: Error?){
+        print("just chill1")
+    }
+    
+    
+    func photoOutput(_ output: AVCapturePhotoOutput,
+                     didFinishProcessingPhotoSampleBuffer photoSampleBuffer: CMSampleBuffer?,
+                     previewPhotoSampleBuffer: CMSampleBuffer?,
+                     resolvedSettings: AVCaptureResolvedPhotoSettings,
+                     bracketSettings: AVCaptureBracketedStillImageSettings?,
+                     error: Error?){
+        print("just chill2")
+    }
+    
+    
+    public func capture(_ captureOutput: AVCapturePhotoOutput, didFinishProcessingRawPhotoSampleBuffer rawSampleBuffer: CMSampleBuffer?, previewPhotoSampleBuffer: CMSampleBuffer?, resolvedSettings: AVCaptureResolvedPhotoSettings, bracketSettings: AVCaptureBracketedStillImageSettings?, error: Error?) {
+        
+            print("just chill0")
+    }
+    
+    func photoOutput(_ output: AVCapturePhotoOutput,
+                     didFinishCaptureFor resolvedSettings: AVCaptureResolvedPhotoSettings,
+                     error: Error?){
+        print("just chill3")
+    }
+    func capture(_ captureOutput: AVCapturePhotoOutput,
+                 didFinishCaptureForResolvedSettings resolvedSettings: AVCaptureResolvedPhotoSettings,
+                 error: Error?){
+        print("just chill4")
+    }
+    
 }
 
 
@@ -144,4 +200,6 @@ extension UIImage {
         return image
     }
 }
+
+
 

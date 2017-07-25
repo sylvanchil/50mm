@@ -61,6 +61,8 @@ class CameraController:NSObject{
             captureSession.addOutput(capturePhotoOutput)
         }
         
+        
+        
         captureSession.commitConfiguration()
         captureSession.startRunning()
         
@@ -86,10 +88,45 @@ class CameraController:NSObject{
     }
     
     public func captureImage(){
-        let photoSetting:AVCapturePhotoSettings =  AVCapturePhotoSettings()
         
-        photoSetting.flashMode = cameraBrain.flashIsOn() ? AVCaptureFlashMode.on : AVCaptureFlashMode.off
-        capturePhotoOutput.capturePhoto(with: photoSetting, delegate: cameraBrain )
+        if(cameraBrain.currentOutputSettingIndex() == 0){
+            guard let availableRawFormat = capturePhotoOutput.availableRawPhotoPixelFormatTypes.first else { return }
+            
+            let photoSettings = AVCapturePhotoSettings(rawPixelFormatType: availableRawFormat.uint32Value)
+            
+            
+            photoSettings.isAutoStillImageStabilizationEnabled = false
+            
+            photoSettings.flashMode = cameraBrain.flashIsOn() ? AVCaptureFlashMode.on : AVCaptureFlashMode.off
+            
+            capturePhotoOutput.capturePhoto(with: photoSettings, delegate: cameraBrain )
+            
+        }else if(cameraBrain.currentOutputSettingIndex()==1){
+            let photoSetting:AVCapturePhotoSettings =  AVCapturePhotoSettings()
+            
+            photoSetting.flashMode = cameraBrain.flashIsOn() ? AVCaptureFlashMode.on : AVCaptureFlashMode.off
+            
+            capturePhotoOutput.capturePhoto(with: photoSetting, delegate: cameraBrain )
+            
+            
+        }else{
+            let rawFormatType = kCVPixelFormatType_14Bayer_RGGB
+            guard capturePhotoOutput.availableRawPhotoPixelFormatTypes.contains(NSNumber(value: rawFormatType))
+                else { return }
+            
+            let photoSettings = AVCapturePhotoSettings(rawPixelFormatType: rawFormatType,
+                                                       processedFormat: [AVVideoCodecKey : AVVideoCodecJPEG])
+            
+            
+            
+            
+            photoSettings.flashMode = cameraBrain.flashIsOn() ? AVCaptureFlashMode.on : AVCaptureFlashMode.off
+            capturePhotoOutput.capturePhoto(with: photoSettings, delegate: cameraBrain)
+            
+            
+            
+        }
+        
         
         
     }
@@ -106,8 +143,20 @@ class CameraController:NSObject{
         cameraBrain.nextOutputSetting()
         
     }
+    
+    
     public func currentSetting()->String{
-        return cameraBrain.currentOutputSetting()
+        let captureMode = cameraBrain.currentOutputSettingIndex()
+        switch captureMode {
+        case 0:
+            return String(" RAW")
+        case 1:
+            return String("JPEG")
+        case 2:
+            return String(" RAW\n   +\nJPEG")
+        default:
+            return String("")
+        }
         
     }
     
