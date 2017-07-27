@@ -13,6 +13,9 @@ import Photos
 class ViewController: UIViewController {
     
     var cameraController = CameraController()
+    var reviewing = false
+    var touchOriginPosition = CGPoint(x:0,y:0)
+    var originLensPosition : Float = 0.0
     
     @IBAction func captureImage(_ sender: UIButton) {
         cameraController.captureImage()
@@ -131,17 +134,28 @@ class ViewController: UIViewController {
         
         print(caliperView.layer.position)
         print(DOFBarView.layer.position)
+        //DOFBarOriginPosition = DOFBarView.layer.position
         // Do any additional setup after loading the view, typically from a nib.  
         addObserver(self, forKeyPath: #keyPath(cameraController.captureDevice.lensPosition), options:[.new, .old], context: nil)
-        
+        addObserver(self, forKeyPath: #keyPath(cameraController.captureDevice.isAdjustingFocus), options: [.new, .old], context: nil)
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == #keyPath(cameraController.captureDevice.lensPosition) {
+        //if (keyPath == #keyPath(cameraController.captureDevice.lensPosition) && cameraController.captureDevice.focusMode == AVCaptureFocusMode.autoFocus){
+        if (keyPath == #keyPath(cameraController.captureDevice.lensPosition)){
+                
             // Update Time Label
             //print(captureDevice.lensPosition)
+           // DOFBarView.layer.position.y = DOFBarOriginPosition.y + CGFloat(Float(DOFBarView.layer.bounds.height) * (cameraController.captureDevice.lensPosition-0.5))
             
             DOFBarView.layer.transform = CATransform3DMakeTranslation(0,  CGFloat(Float(DOFBarView.layer.bounds.height) * (cameraController.captureDevice.lensPosition-0.5)), 0)
+
+            //print(DOFBarView.layer.position.y - DOFBarOriginPosition.y)
+            
+        }else if (keyPath == #keyPath(cameraController.captureDevice.isAdjustingFocus )){
+            if(cameraController.captureDevice.isAdjustingFocus == false){
+                focusConfirm.layer.opacity = 0
+            }
         }
     }
 
@@ -166,9 +180,10 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
         //cameraController.changeLensPosition(to:1.0)
         
+        
+        //review
         if(reviewThumbView.bounds.contains((touches.first?.location(in: reviewThumbView))!)){
             
             self.updateThumbNail()
@@ -176,7 +191,16 @@ class ViewController: UIViewController {
             self.reviewLargeView.image = reviewThumbView.image
             
             ImageReviewThumbStack.layer.opacity = 1
-        }else if(capturePreview.bounds.contains((touches.first?.location(in: capturePreview))!)){
+            reviewing = true
+        }
+        //manual focus
+        else if(DOFBarView.bounds.contains((touches.first?.location(in: DOFBarView))!)){
+            //begin manual focus
+            touchOriginPosition = (touches.first?.location(in: capturePreview))!
+            originLensPosition = cameraController.captureDevice.lensPosition
+        }
+        // touch focus
+        else if(capturePreview.bounds.contains((touches.first?.location(in: capturePreview))!)){
             let touchPoint = touches.first!
             let screenSize = capturePreview.bounds.size
             
@@ -196,42 +220,67 @@ class ViewController: UIViewController {
             focusConfirm.layer.opacity = 0.4
             cameraController.focus(on: focusPoint)
             
+            /*
             DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeNanoseconds: UInt64(DispatchTime.now().uptimeNanoseconds) + UInt64(8000000)), execute: {
                 self.focusConfirm.layer.opacity = 0
                 
             })
+            */
         }
-        
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let imageViews = ImageReviewThumbStack.subviews
         
-        for imageThumb in imageViews{
-            if(imageThumb.bounds.contains((touches.first?.location(in: imageThumb))!)){
+        if(reviewing){
+            for imageThumb in imageViews{
+                if(imageThumb.bounds.contains((touches.first?.location(in: imageThumb))!)){
+                    reviewLargeView.layer.opacity = 1.0
+                    
+                    imageThumb.layer.opacity = 1
+                    imageThumb.layer.transform = CATransform3DMakeScale(1.1, 1.1, 1.1)
+                    imageThumb.layer.borderColor = UIColor.white.cgColor
+                    imageThumb.layer.borderWidth = 2
+                    reviewLargeView.image = (imageThumb as! UIImageView).image
+                }
+                else{
+                    imageThumb.layer.opacity = 0.8
+                    imageThumb.layer.transform = CATransform3DMakeScale(1, 1, 1)
+                    imageThumb.layer.borderWidth = 0
+                }
+            }
+            if(reviewThumbView.bounds.contains((touches.first?.location(in: reviewThumbView))!)){
                 reviewLargeView.layer.opacity = 1.0
+                self.reviewLargeView.image = reviewThumbView.image
+            }
+        }
+        //else
+        if(DOFBarView.bounds.contains((touches.first?.location(in: DOFBarView))!)){
+            //set lens position
+            //
+            if(cameraController.captureDevice.isLockingFocusWithCustomLensPositionSupported){
+                let newLocation = touches.first?.location(in: capturePreview)
+                var newLensPosition = originLensPosition + Float(((newLocation?.y)! - touchOriginPosition.y) / DOFBarView.layer.bounds.height)
                 
-                imageThumb.layer.opacity = 1
-                imageThumb.layer.transform = CATransform3DMakeScale(1.1, 1.1, 1.1)
-                imageThumb.layer.borderColor = UIColor.white.cgColor
-                imageThumb.layer.borderWidth = 2
-                reviewLargeView.image = (imageThumb as! UIImageView).image
+                newLensPosition = newLensPosition > 1.0 ? 1.0 : newLensPosition
+                newLensPosition = newLensPosition < 0 ? 0 : newLensPosition
+                do{
+                    try cameraController.captureDevice.lockForConfiguration()
+                }catch{
+                
+                }
+                cameraController.captureDevice.setFocusModeLockedWithLensPosition(newLensPosition, completionHandler: nil)
+                cameraController.captureDevice.unlockForConfiguration()
             }
-            else{
-                imageThumb.layer.opacity = 0.8
-                imageThumb.layer.transform = CATransform3DMakeScale(1, 1, 1)
-                imageThumb.layer.borderWidth = 0
-            }
+            
         }
-        if(reviewThumbView.bounds.contains((touches.first?.location(in: reviewThumbView))!)){
-            reviewLargeView.layer.opacity = 1.0
-            self.reviewLargeView.image = reviewThumbView.image
-        }
+        
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
             reviewLargeView.layer.opacity = 0
             ImageReviewThumbStack.layer.opacity = 0
+            reviewing = false
     }
 }
 

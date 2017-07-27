@@ -63,18 +63,8 @@ class CameraController:NSObject{
         
         recentImages = PhotoLibrary().getAllPhotos()
         
-        //addObserver(self, forKeyPath: #keyPath(captureDevice.lensPosition), options:[.new, .old], context: nil)
-        
-        
     }
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == #keyPath(captureDevice.lensPosition) {
-            // Update Time Label
-            
-                //print(captureDevice.lensPosition)
-        
-        }
-    }
+
     
     
     func beginSession(){

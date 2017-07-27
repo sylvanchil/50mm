@@ -107,7 +107,7 @@
                                         </constraints>
                                     </view>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="caliper" translatesAutoresizingMaskIntoConstraints="NO" id="WDl-1g-jcO">
-                                        <rect key="frame" x="453.5" y="150" width="11" height="74"/>
+                                        <rect key="frame" x="453.5" y="150.5" width="11" height="74"/>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DOFBar" translatesAutoresizingMaskIntoConstraints="NO" id="qKs-iH-tRf">
                                         <rect key="frame" x="464.5" y="59" width="32" height="256"/>
