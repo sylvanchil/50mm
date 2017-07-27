@@ -29,8 +29,8 @@ class ViewController: UIViewController {
             
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
-            self.updateThumbNail()
             self.cameraController.updateCachePhotos()
+            self.updateThumbNail()
             self.updateReviewThumbs()
             
         })
@@ -81,7 +81,6 @@ class ViewController: UIViewController {
         }
 
     }
-    
     
     
     func reloadFrameLine(){
@@ -157,22 +156,31 @@ class ViewController: UIViewController {
         addFrameLine()
         reloadUI()
         
-        putLastPhotoAtThumbnail()
+        //putLastPhotoAtThumbnail()
         
         ImageReviewThumbStack.layer.opacity = 0
         focusConfirm.layer.borderWidth = 2
         focusConfirm.layer.borderColor = UIColor.green.cgColor
         focusConfirm.layer.opacity = 0
         
+        updateThumbNail()
         // Do any additional setup after loading the view, typically from a nib.
     }
     
     func updateThumbNail(){
+       // reviewThumbView.image = cameraController
+        
+        reviewThumbView.image = cameraController.recentImages?.first
     
     }
     
     func updateReviewThumbs(){
-    
+        var iter = 5
+        for views in ImageReviewThumbStack.subviews{
+            (views as! UIImageView).image = cameraController.recentImages?[iter]
+            iter = iter - 1
+        }
+        
     }
     
 
@@ -183,8 +191,12 @@ class ViewController: UIViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         //print(touches.first?.location(in: reviewThumbView)
         if(reviewThumbView.bounds.contains((touches.first?.location(in: reviewThumbView))!)){
-            self.updateThumbNail()
+            self.cameraController.updateCachePhotos()
             
+            self.updateThumbNail()
+            self.updateReviewThumbs()
+            
+            self.reviewLargeView.image = reviewThumbView.image
             //putLastPhotoAtReview()
             ImageReviewThumbStack.layer.opacity = 1
         }else if(capturePreview.bounds.contains((touches.first?.location(in: capturePreview))!)){
@@ -219,8 +231,11 @@ class ViewController: UIViewController {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let imageViews = ImageReviewThumbStack.subviews
         
+        
         for imageThumb in imageViews{
             if(imageThumb.bounds.contains((touches.first?.location(in: imageThumb))!)){
+                reviewLargeView.layer.opacity = 1.0
+                
                 imageThumb.layer.opacity = 1
                 imageThumb.layer.transform = CATransform3DMakeScale(1.1, 1.1, 1.1)
                 imageThumb.layer.borderColor = UIColor.white.cgColor
@@ -235,8 +250,10 @@ class ViewController: UIViewController {
             }
         }
         if(reviewThumbView.bounds.contains((touches.first?.location(in: reviewThumbView))!)){
-            self.updateThumbNail()
+            //self.updateThumbNail()
+            reviewLargeView.layer.opacity = 1.0
             
+            self.reviewLargeView.image = reviewThumbView.image
             //putLastPhotoAtReview()
         }
         

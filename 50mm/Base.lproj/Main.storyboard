@@ -75,7 +75,7 @@
                                             <action selector="changeFocalLength:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aRj-sA-eU6"/>
                                         </connections>
                                     </button>
-                                    <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="testimage" translatesAutoresizingMaskIntoConstraints="NO" id="quS-Af-Xwb" userLabel="reviewThumbnail">
+                                    <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="testimage" translatesAutoresizingMaskIntoConstraints="NO" id="quS-Af-Xwb" userLabel="reviewThumbnail">
                                         <rect key="frame" x="0.0" y="275" width="70" height="70"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="quS-Af-Xwb" secondAttribute="height" multiplier="1:1" id="v4v-yw-FhI"/>

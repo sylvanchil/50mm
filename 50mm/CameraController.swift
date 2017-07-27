@@ -9,6 +9,7 @@
 import Foundation
 import AVFoundation
 import UIKit
+import Photos
 
 class CameraController:NSObject{
     
@@ -20,6 +21,11 @@ class CameraController:NSObject{
     private var frameLineView: UIView?
     
     private var frameLineShapeLayer : CAShapeLayer?
+    
+    public var recentImages:[UIImage]?
+
+    
+    //let photoLibrary = PhotoLibrary()
     
     //private var photoCaptureProcessor = PhotoCaptureProcessor()
     private var cameraBrain = CameraBrain()
@@ -33,7 +39,9 @@ class CameraController:NSObject{
         if let availiableDevices = AVCaptureDeviceDiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaTypeVideo, position: .back).devices{
             captureDevice = availiableDevices.first
         }
-
+        
+        recentImages = PhotoLibrary().getAllPhotos()
+        
     }
     
     func beginSession(){
@@ -134,7 +142,7 @@ class CameraController:NSObject{
     }
     
     public func updateCachePhotos(){
-    
+        recentImages = PhotoLibrary().getAllPhotos()
     }
     
     public func nextFocalLength(){
@@ -184,6 +192,58 @@ class CameraController:NSObject{
     }
     
 }
+
+class PhotoLibrary {
+    
+    fileprivate var imgManager: PHImageManager
+    fileprivate var requestOptions: PHImageRequestOptions
+    fileprivate var fetchOptions: PHFetchOptions
+    fileprivate var fetchResult: PHFetchResult<PHAsset>
+    
+    init () {
+        imgManager = PHImageManager.default()
+        requestOptions = PHImageRequestOptions()
+        requestOptions.isSynchronous = true
+        fetchOptions = PHFetchOptions()
+        fetchOptions.sortDescriptors = [NSSortDescriptor(key:"creationDate", ascending: true)]
+        fetchResult = PHAsset.fetchAssets(with: PHAssetMediaType.image, options: fetchOptions)
+    }
+    
+    var count: Int {
+        return fetchResult.count
+    }
+    
+    func setPhoto(at index: Int, completion block: @escaping (UIImage?)->()) {
+        
+        if index < fetchResult.count  {
+            imgManager.requestImage(for: fetchResult.object(at: index) as PHAsset, targetSize: UIScreen.main.bounds.size, contentMode: PHImageContentMode.aspectFill, options: requestOptions) { (image, _) in
+                block(image)
+            }
+        } else {
+            block(nil)
+        }
+    }
+    
+    func getAllPhotos() -> [UIImage] {
+        
+        var resultArray = [UIImage]()
+        
+        let theCount = fetchResult.count
+        
+        for index in 0...5 {
+            
+            //for index in 0..<fetchResult.count {
+            imgManager.requestImage(for: fetchResult.object(at: theCount-index-1) as PHAsset, targetSize: UIScreen.main.bounds.size, contentMode: PHImageContentMode.aspectFill, options: requestOptions) { (image, _) in
+                
+                if let image = image {
+                    resultArray.append(image)
+                }
+            }
+        }
+        return resultArray
+    }
+}
+
 
 
 public extension UIDevice {

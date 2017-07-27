@@ -20,6 +20,7 @@ class CameraBrain:NSObject{
     //shorter launch time
     //touch focus
     
+    let photoLibrary = PhotoLibrary()
     
     let lengthOfFilm = 36.0
     let widthOfFilm = 24.0
@@ -33,6 +34,8 @@ class CameraBrain:NSObject{
     private var captureModeIndex = 0
 
     private var deviceName :String?
+    
+    
     
     var photoSampleBuffer: CMSampleBuffer?
     var previewPhotoSampleBuffer: CMSampleBuffer?
@@ -52,7 +55,6 @@ class CameraBrain:NSObject{
             return 0
         }
     }
-    
     
     
     public func setDefaultFocalLength(using focalLength:Int){
@@ -160,9 +162,6 @@ struct angleOfViews{
 
 extension CameraBrain : AVCapturePhotoCaptureDelegate{
     
-    
-    
-  
     public func capture(_ captureOutput: AVCapturePhotoOutput, didFinishProcessingPhotoSampleBuffer photoSampleBuffer: CMSampleBuffer?, previewPhotoSampleBuffer: CMSampleBuffer?, resolvedSettings: AVCaptureResolvedPhotoSettings, bracketSettings: AVCaptureBracketedStillImageSettings?, error: Error?){
         if let photoSampleBuffer = photoSampleBuffer {
             
@@ -196,37 +195,6 @@ extension CameraBrain : AVCapturePhotoCaptureDelegate{
     }
     
     public func capture(_ captureOutput: AVCapturePhotoOutput, didFinishProcessingRawPhotoSampleBuffer rawSampleBuffer: CMSampleBuffer?, previewPhotoSampleBuffer: CMSampleBuffer?, resolvedSettings: AVCaptureResolvedPhotoSettings, bracketSettings: AVCaptureBracketedStillImageSettings?, error: Error?) {
-        
-        /*
-        
-        if let rawSampleBuffer = rawSampleBuffer{
-            let dngData = AVCapturePhotoOutput.dngPhotoDataRepresentation(forRawSampleBuffer: rawSampleBuffer, previewPhotoSampleBuffer: previewPhotoSampleBuffer)
-            
-            let dngFileURL = NSURL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("\(resolvedSettings.uniqueID).dng")!
-            
-            do {
-                try dngData?.write(to: dngFileURL, options: [])
-            } catch _ as NSError {
-                print("Unable to write DNG file.")
-                
-                return
-            }
-            
-            PHPhotoLibrary.shared().performChanges({
-                
-                let creationRequest = PHAssetCreationRequest.forAsset()
-                let creationOptions = PHAssetResourceCreationOptions()
-                creationOptions.shouldMoveFile = true
-                // creationRequest.addResource(with: .photo, data: jpegData, options: nil)
-                creationRequest.addResource(with:PHAssetResourceType.alternatePhoto, fileURL: dngFileURL, options: creationOptions)
-                
-            }, completionHandler: { (success, error) -> Void in
-                print("Finished deleting asset. %@", (success ? "Success" : (error ?? "no" as? Error)!))
-                return
-            })
-            
-        }
- */
         
         guard error == nil, let rawSampleBuffer = rawSampleBuffer else {
             print("Error capturing RAW photo:\(String(describing: error))")
@@ -347,6 +315,7 @@ extension CameraBrain : AVCapturePhotoCaptureDelegate{
     }
     
 }
+
 
 extension UIImage {
     func crop( rect: CGRect) -> UIImage {
