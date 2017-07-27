@@ -14,9 +14,10 @@ class ViewController: UIViewController {
     
     var cameraController = CameraController()
     var reviewing = false
+    var adjustingExposure = false
     var touchOriginPosition = CGPoint(x:0,y:0)
     var originLensPosition : Float = 0.0
-    var originExposureBias : Float = 0.0
+    //var originExposureBias : Float = 0.0
     
     @IBAction func captureImage(_ sender: UIButton) {
         cameraController.captureImage()
@@ -203,8 +204,17 @@ class ViewController: UIViewController {
         // touch focus
         else if(capturePreview.bounds.contains((touches.first?.location(in: capturePreview))!)){
             touchOriginPosition = (touches.first?.location(in: capturePreview))!
-            originExposureBias = cameraController.captureDevice.exposureTargetBias
             
+            
+            do{
+                try cameraController.captureDevice.lockForConfiguration()
+            }catch{
+                
+            }
+            cameraController.captureDevice.setExposureTargetBias(0.0, completionHandler: nil)
+            cameraController.captureDevice.unlockForConfiguration()
+            
+            adjustingExposure = true
             
             let touchPoint = touches.first!
             let screenSize = capturePreview.bounds.size
@@ -273,19 +283,22 @@ class ViewController: UIViewController {
             }
             
         }else{
+            if(cameraController.captureDevice.isExposureModeSupported(AVCaptureExposureMode.locked) && adjustingExposure){
+                
+        
             let newLocation = touches.first?.location(in: capturePreview)
-            let newOffset =  ((newLocation?.y)! - touchOriginPosition.y)/capturePreview.layer.bounds.height * -2.0
+            let newOffset =  ((newLocation?.y)! - touchOriginPosition.y)/capturePreview.layer.bounds.height * -3.0
             
             do{
                 try cameraController.captureDevice.lockForConfiguration()
             }catch{
                 
             }
-            
+
             cameraController.captureDevice.setExposureTargetBias(Float(newOffset), completionHandler: nil)
 
             cameraController.captureDevice.unlockForConfiguration()
-            
+            }
         }
         
     }
@@ -294,6 +307,7 @@ class ViewController: UIViewController {
             reviewLargeView.layer.opacity = 0
             ImageReviewThumbStack.layer.opacity = 0
             reviewing = false
+            adjustingExposure = false
     }
 }
 

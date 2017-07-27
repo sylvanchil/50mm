@@ -107,10 +107,10 @@
                                         </constraints>
                                     </view>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="caliper" translatesAutoresizingMaskIntoConstraints="NO" id="WDl-1g-jcO">
-                                        <rect key="frame" x="453.5" y="150.5" width="11" height="74"/>
+                                        <rect key="frame" x="457.5" y="150.5" width="11" height="74"/>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DOFBar" translatesAutoresizingMaskIntoConstraints="NO" id="qKs-iH-tRf">
-                                        <rect key="frame" x="464.5" y="59" width="32" height="256"/>
+                                        <rect key="frame" x="468.5" y="59" width="32" height="256"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -120,7 +120,7 @@
                                     <constraint firstAttribute="bottom" secondItem="QFF-Y4-707" secondAttribute="bottom" constant="3" id="DZJ-6s-BXJ"/>
                                     <constraint firstItem="qKs-iH-tRf" firstAttribute="leading" secondItem="WDl-1g-jcO" secondAttribute="trailing" id="O8T-Yj-pRU"/>
                                     <constraint firstItem="qKs-iH-tRf" firstAttribute="centerY" secondItem="Zau-Fn-4Lq" secondAttribute="centerY" id="ODY-y1-6UT"/>
-                                    <constraint firstAttribute="trailing" secondItem="qKs-iH-tRf" secondAttribute="trailing" constant="4" id="SAV-r7-wsc"/>
+                                    <constraint firstAttribute="trailing" secondItem="qKs-iH-tRf" secondAttribute="trailing" id="SAV-r7-wsc"/>
                                     <constraint firstItem="FCs-6s-8g5" firstAttribute="top" secondItem="Zau-Fn-4Lq" secondAttribute="top" constant="-18" id="aEl-RJ-Tc1"/>
                                     <constraint firstAttribute="bottom" secondItem="y9u-Dk-3Kz" secondAttribute="bottom" id="bOu-tL-NEY"/>
                                     <constraint firstAttribute="trailing" secondItem="y9u-Dk-3Kz" secondAttribute="trailing" id="cZh-hp-LA3"/>
