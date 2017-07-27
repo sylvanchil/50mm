@@ -20,7 +20,6 @@ class ViewController: UIViewController {
         frameLineview.layer.borderWidth = 5
         frameLineview.layer.opacity = 0.4
         
-        
         DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeNanoseconds: UInt64(DispatchTime.now().uptimeNanoseconds) + UInt64(1000000)), execute: {
             
             self.frameLineview.layer.borderColor = UIColor.orange.cgColor
@@ -30,11 +29,15 @@ class ViewController: UIViewController {
             
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
-            self.putLastPhotoAtThumbnail()
+            self.updateThumbNail()
+            self.cameraController.updateCachePhotos()
+            self.updateReviewThumbs()
+            
         })
         
     }
 
+    @IBOutlet weak var focusConfirm: UIView!
     @IBOutlet weak var ImageReviewThumbStack: UIStackView!
     @IBOutlet weak var outputSetting: UIButton!
     @IBOutlet weak var focalLengthIndicator: UIButton!
@@ -157,8 +160,21 @@ class ViewController: UIViewController {
         putLastPhotoAtThumbnail()
         
         ImageReviewThumbStack.layer.opacity = 0
+        focusConfirm.layer.borderWidth = 2
+        focusConfirm.layer.borderColor = UIColor.green.cgColor
+        focusConfirm.layer.opacity = 0
+        
         // Do any additional setup after loading the view, typically from a nib.
     }
+    
+    func updateThumbNail(){
+    
+    }
+    
+    func updateReviewThumbs(){
+    
+    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -167,8 +183,35 @@ class ViewController: UIViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         //print(touches.first?.location(in: reviewThumbView)
         if(reviewThumbView.bounds.contains((touches.first?.location(in: reviewThumbView))!)){
-            putLastPhotoAtReview()
+            self.updateThumbNail()
+            
+            //putLastPhotoAtReview()
             ImageReviewThumbStack.layer.opacity = 1
+        }else if(capturePreview.bounds.contains((touches.first?.location(in: capturePreview))!)){
+            let touchPoint = touches.first!
+            let screenSize = capturePreview.bounds.size
+            
+            let focusPoint = CGPoint(x: touchPoint.location(in: capturePreview).x / screenSize.width,
+                                     y: touchPoint.location(in: capturePreview).y / screenSize.height)
+   
+            let touchLocation = touchPoint.location(in: capturePreview)
+            
+            var x = touchLocation.x
+            x = x < 25 ? 25 : x
+            x = x > (capturePreview.layer.bounds.size.width - 25) ? (capturePreview.layer.bounds.size.width - 25) : x
+            var y = touchLocation.y
+            y = y < 19 ? 19 : y
+            y = y > (capturePreview.layer.bounds.size.height - 19) ? (capturePreview.layer.bounds.size.height - 19) : y
+            
+            focusConfirm.layer.position = CGPoint(x: x, y: y)
+            focusConfirm.layer.opacity = 0.4
+            cameraController.focus(on: focusPoint)
+            //focusConfirm.layer.borderColor = UIColor.red.cgColor
+            
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeNanoseconds: UInt64(DispatchTime.now().uptimeNanoseconds) + UInt64(8000000)), execute: {
+                self.focusConfirm.layer.opacity = 0
+                
+            })
         }
         
     }
@@ -192,7 +235,9 @@ class ViewController: UIViewController {
             }
         }
         if(reviewThumbView.bounds.contains((touches.first?.location(in: reviewThumbView))!)){
-            putLastPhotoAtReview()
+            self.updateThumbNail()
+            
+            //putLastPhotoAtReview()
         }
         
     }

@@ -99,17 +99,26 @@
                                             <constraint firstAttribute="width" secondItem="QFF-Y4-707" secondAttribute="height" multiplier="4:3" id="xM7-I6-MhK"/>
                                         </constraints>
                                     </imageView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FCs-6s-8g5" userLabel="focusConfirm">
+                                        <rect key="frame" x="-24" y="-18" width="48" height="36"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="36" id="3Xf-Iw-4hF"/>
+                                            <constraint firstAttribute="width" constant="48" id="DYK-6b-xfs"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="QFF-Y4-707" firstAttribute="top" secondItem="Zau-Fn-4Lq" secondAttribute="top" constant="3" id="7Zx-xr-hcm"/>
                                     <constraint firstItem="y9u-Dk-3Kz" firstAttribute="top" secondItem="Zau-Fn-4Lq" secondAttribute="top" id="8Hw-Uu-v71"/>
                                     <constraint firstAttribute="bottom" secondItem="QFF-Y4-707" secondAttribute="bottom" constant="3" id="DZJ-6s-BXJ"/>
+                                    <constraint firstItem="FCs-6s-8g5" firstAttribute="top" secondItem="Zau-Fn-4Lq" secondAttribute="top" constant="-18" id="aEl-RJ-Tc1"/>
                                     <constraint firstAttribute="bottom" secondItem="y9u-Dk-3Kz" secondAttribute="bottom" id="bOu-tL-NEY"/>
                                     <constraint firstAttribute="trailing" secondItem="y9u-Dk-3Kz" secondAttribute="trailing" id="cZh-hp-LA3"/>
                                     <constraint firstAttribute="trailing" secondItem="QFF-Y4-707" secondAttribute="trailing" constant="4" id="coI-bv-P4r"/>
                                     <constraint firstAttribute="width" secondItem="Zau-Fn-4Lq" secondAttribute="height" multiplier="4:3" id="ioT-hy-OHU"/>
                                     <constraint firstItem="y9u-Dk-3Kz" firstAttribute="leading" secondItem="Zau-Fn-4Lq" secondAttribute="leading" id="iyD-Pm-v5a"/>
+                                    <constraint firstItem="FCs-6s-8g5" firstAttribute="leading" secondItem="Zau-Fn-4Lq" secondAttribute="leading" constant="-24" id="mFl-1j-ZeC"/>
                                 </constraints>
                                 <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                             </view>
@@ -177,6 +186,7 @@
                         <outlet property="capturePreview" destination="Zau-Fn-4Lq" id="zKt-Nz-J71"/>
                         <outlet property="flashStatus" destination="hz9-5z-86M" id="vzn-nm-9Z5"/>
                         <outlet property="focalLengthIndicator" destination="zeC-ia-hTz" id="YL3-ku-MUW"/>
+                        <outlet property="focusConfirm" destination="FCs-6s-8g5" id="pR4-IO-o0t"/>
                         <outlet property="frameLineview" destination="y9u-Dk-3Kz" id="mcl-2Q-3CO"/>
                         <outlet property="outputSetting" destination="OI9-xl-CeI" id="Miw-9e-0YP"/>
                         <outlet property="reviewLargeView" destination="QFF-Y4-707" id="Die-Hm-e8z"/>

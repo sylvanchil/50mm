@@ -23,10 +23,7 @@ class CameraController:NSObject{
     
     //private var photoCaptureProcessor = PhotoCaptureProcessor()
     private var cameraBrain = CameraBrain()
-    
-    private var lastPhotoTaken:UIImage?
-    
-    
+
     
     func prepareCamera(){
        // cameraBrain.printDeviceName()
@@ -87,17 +84,6 @@ class CameraController:NSObject{
     }
     
     public func captureImage(){
-        /*
-        if(cameraBrain.currentOutputSettingIndex() == 0){
-            guard let availableRawFormat = capturePhotoOutput.availableRawPhotoPixelFormatTypes.first else { return }
-            let photoSettings = AVCapturePhotoSettings(rawPixelFormatType: availableRawFormat.uint32Value)
-            
-         photoSettings.isAutoStillImageStabilizationEnabled = false
-            photoSettings.flashMode = cameraBrain.flashIsOn() ? AVCaptureFlashMode.on : AVCaptureFlashMode.off
-            capturePhotoOutput.capturePhoto(with: photoSettings, delegate: cameraBrain )
-            
-        }else
-        */
         
         if(cameraBrain.currentOutputSettingIndex()==0){
             let photoSetting:AVCapturePhotoSettings =  AVCapturePhotoSettings()
@@ -122,6 +108,33 @@ class CameraController:NSObject{
             
         }
         
+        
+    }
+    
+    public func focus(on focusPoint:CGPoint){
+        if let device = captureDevice {
+            do{
+             try device.lockForConfiguration()
+                
+            }catch {
+            
+            }
+            if device.isFocusPointOfInterestSupported {
+                device.focusPointOfInterest = focusPoint
+                device.focusMode = AVCaptureFocusMode.autoFocus
+            }
+            if device.isExposurePointOfInterestSupported {
+                device.exposurePointOfInterest = focusPoint
+                device.exposureMode = AVCaptureExposureMode.autoExpose
+            }
+            device.unlockForConfiguration()
+            
+        }
+    
+    }
+    
+    public func updateCachePhotos(){
+    
     }
     
     public func nextFocalLength(){

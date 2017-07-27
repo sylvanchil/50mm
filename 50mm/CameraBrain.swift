@@ -345,10 +345,8 @@ extension CameraBrain : AVCapturePhotoCaptureDelegate{
                      error: Error?){
         print("just chill3")
     }
-
     
 }
-
 
 extension UIImage {
     func crop( rect: CGRect) -> UIImage {
