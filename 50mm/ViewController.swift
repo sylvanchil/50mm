@@ -35,6 +35,7 @@ class ViewController: UIViewController {
         
     }
 
+    @IBOutlet weak var ImageReviewThumbStack: UIStackView!
     @IBOutlet weak var outputSetting: UIButton!
     @IBOutlet weak var focalLengthIndicator: UIButton!
     @IBOutlet weak var flashStatus: UIButton!
@@ -43,7 +44,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var reviewThumbView: UIImageView!
     
     @IBOutlet weak var reviewLargeView: UIImageView!
-    
     
     @IBAction func outputSetting(_ sender: UIButton) {
         cameraController.nextSetting()
@@ -156,7 +156,7 @@ class ViewController: UIViewController {
         
         putLastPhotoAtThumbnail()
         
-        
+        ImageReviewThumbStack.layer.opacity = 0
         // Do any additional setup after loading the view, typically from a nib.
     }
 
@@ -165,16 +165,41 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        //print(touches.first?.location(in: reviewThumbView)
+        if(reviewThumbView.bounds.contains((touches.first?.location(in: reviewThumbView))!)){
+            putLastPhotoAtReview()
+            ImageReviewThumbStack.layer.opacity = 1
+        }
+        
+    }
     
-        //print(touches.first?.location(in: reviewThumbView))
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let imageViews = ImageReviewThumbStack.subviews
+        
+        for imageThumb in imageViews{
+            if(imageThumb.bounds.contains((touches.first?.location(in: imageThumb))!)){
+                imageThumb.layer.opacity = 1
+                imageThumb.layer.transform = CATransform3DMakeScale(1.1, 1.1, 1.1)
+                imageThumb.layer.borderColor = UIColor.white.cgColor
+                imageThumb.layer.borderWidth = 2
+                reviewLargeView.image = (imageThumb as! UIImageView).image
+            }
+            else{
+                imageThumb.layer.opacity = 0.8
+                imageThumb.layer.transform = CATransform3DMakeScale(1, 1, 1)
+                imageThumb.layer.borderWidth = 0
+                
+            }
+        }
         if(reviewThumbView.bounds.contains((touches.first?.location(in: reviewThumbView))!)){
             putLastPhotoAtReview()
         }
         
     }
-
+    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
             reviewLargeView.layer.opacity = 0
+            ImageReviewThumbStack.layer.opacity = 0
     }
 }
 

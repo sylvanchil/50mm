@@ -69,7 +69,6 @@ class CameraController:NSObject{
     }
     
     
-    
     func outputToUIView(to UIViewLayer : UIView){
         viewFinderLayer = AVCaptureVideoPreviewLayer(session:captureSession)
         viewFinderLayer?.connection.videoOrientation = AVCaptureVideoOrientation.landscapeRight
@@ -170,6 +169,7 @@ class CameraController:NSObject{
             return 0
         }
     }
+    
 }
 
 
