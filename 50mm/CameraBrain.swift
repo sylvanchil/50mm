@@ -12,13 +12,9 @@ import UIKit
 import Photos
 
 class CameraBrain:NSObject{
-    
-    
-    //raw, jpeg, raw+ jpeg
-    
-    //capture success feedback
-    //shorter launch time
-    //touch focus
+
+    //manual focus with DOF table
+    //manual exposure
     
     let photoLibrary = PhotoLibrary()
     
@@ -36,12 +32,10 @@ class CameraBrain:NSObject{
     private var deviceName :String?
     public var lastImage: UIImage?
     
-    
     var photoSampleBuffer: CMSampleBuffer?
     var previewPhotoSampleBuffer: CMSampleBuffer?
     var rawSampleBuffer: CMSampleBuffer?
     var rawPreviewPhotoSampleBuffer: CMSampleBuffer?
-    
     
     public func currentFocalLength()->Int{
         switch focalLengthIndex{
@@ -55,7 +49,6 @@ class CameraBrain:NSObject{
             return 0
         }
     }
-    
     
     public func setDefaultFocalLength(using focalLength:Int){
         defaultFocalLength = focalLength
@@ -71,29 +64,9 @@ class CameraBrain:NSObject{
         return flashMode
     }
     
-    
     public func currentOutputSettingIndex()->Int{
         return captureModeIndex
     }
-
-   /*
-    
-    public func currentOutputSetting()->String{
-        switch captureModeIndex {
-        case 0:
-            return String(" RAW")
-        case 1:
-            return String("JPEG")
-        case 2:
-            return String(" RAW\n   +\nJPEG")
-        default:
-            return String("")
-        }
-    }
- 
- */
-    
-    
     
     public func croppingRatio()->Double{
         let defaultAOV = angleOfView(of: Double(defaultFocalLength))
@@ -216,21 +189,23 @@ extension CameraBrain : AVCapturePhotoCaptureDelegate{
                  didFinishCaptureForResolvedSettings resolvedSettings: AVCaptureResolvedPhotoSettings,
                  error: Error?){
         print("finish chill")
-    
-        if let rawSampleBuffer = self.rawSampleBuffer, let photoSampleBuffer = self.photoSampleBuffer {
-            
-            saveRAWPlusJPEGPhotoLibrary(rawSampleBuffer,
-                                        rawPreviewSampleBuffer: self.rawPreviewPhotoSampleBuffer,
-                photoSampleBuffer: photoSampleBuffer,
-                previewSampleBuffer: self.previewPhotoSampleBuffer,
-                completionHandler: { success, error in
-                    
-                    if success {
-                        print("Added RAW+JPEG photo to library.")
-                    } else {
-                        print("Error adding RAW+JPEG photo to library: \(String(describing: error))")
-                    }
-            })
+        
+        if(self.currentOutputSettingIndex()==1){
+            if let rawSampleBuffer = self.rawSampleBuffer, let photoSampleBuffer = self.photoSampleBuffer {
+                
+                saveRAWPlusJPEGPhotoLibrary(rawSampleBuffer,
+                                            rawPreviewSampleBuffer: self.rawPreviewPhotoSampleBuffer,
+                    photoSampleBuffer: photoSampleBuffer,
+                    previewSampleBuffer: self.previewPhotoSampleBuffer,
+                    completionHandler: { success, error in
+                        
+                        if success {
+                            print("Added RAW+JPEG photo to library.")
+                        } else {
+                            print("Error adding RAW+JPEG photo to library: \(String(describing: error))")
+                        }
+                })
+            }
         }
 
     }
@@ -321,7 +296,6 @@ extension CameraBrain : AVCapturePhotoCaptureDelegate{
     }
     
 }
-
 
 extension UIImage {
     func crop( rect: CGRect) -> UIImage {

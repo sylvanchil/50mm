@@ -20,7 +20,7 @@ class ViewController: UIViewController {
         frameLineview.layer.borderWidth = 5
         frameLineview.layer.opacity = 0.4
         
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeNanoseconds: UInt64(DispatchTime.now().uptimeNanoseconds) + UInt64(1000000)), execute: {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeNanoseconds: UInt64(DispatchTime.now().uptimeNanoseconds) + UInt64(2000000)), execute: {
             
             self.frameLineview.layer.borderColor = UIColor.orange.cgColor
             
@@ -28,6 +28,8 @@ class ViewController: UIViewController {
             self.frameLineview.layer.opacity = 0.3
             
         })
+        
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
             self.cameraController.updateCachePhotos()
             self.updateThumbNail()
@@ -144,6 +146,10 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        cameraController.changeLensPosition(to:1.0)
+        
+        
         if(reviewThumbView.bounds.contains((touches.first?.location(in: reviewThumbView))!)){
             
             self.updateThumbNail()

@@ -16,24 +16,44 @@ class CameraController:NSObject{
     
     private var captureSession = AVCaptureSession()
     private var viewFinderLayer : AVCaptureVideoPreviewLayer?
-    private var captureDevice :AVCaptureDevice!
+    //@objc private var captureDevice :AVCaptureDevice!
+    @objc private var captureDevice :AVCaptureDevice!
+    
     private var capturePhotoOutput = AVCapturePhotoOutput()
     private var frameLineView: UIView?
     
     private var frameLineShapeLayer : CAShapeLayer?
     
     public var recentImages:[UIImage]?
-
-    public var neetToUpdateCachePhoto = true
     
-    //let photoLibrary = PhotoLibrary()
+    public var needUpdateCache = true
     
-    //private var photoCaptureProcessor = PhotoCaptureProcessor()
+    public var lastImage : UIImage{
+        get{
+            return cameraBrain.lastImage!
+            
+        }
+    }
+    
     private var cameraBrain = CameraBrain()
 
+    func changeLensPosition(to position: Float)
+    {
+        if(captureDevice.isLockingFocusWithCustomLensPositionSupported){
+            
+            do{
+                try captureDevice.lockForConfiguration()
+            }catch{
+                
+            }
+            captureDevice.setFocusModeLockedWithLensPosition(position , completionHandler: nil)
+            captureDevice.unlockForConfiguration()
+        }
+        
+    }
+    
     
     func prepareCamera(){
-       // cameraBrain.printDeviceName()
         cameraBrain.setDefaultFocalLength(using: self.defaultFocalLengthByDevice())
         
         captureSession.sessionPreset = AVCaptureSessionPresetPhoto
@@ -43,10 +63,21 @@ class CameraController:NSObject{
         
         recentImages = PhotoLibrary().getAllPhotos()
         
+        addObserver(self, forKeyPath: #keyPath(captureDevice.lensPosition), options:[.new, .old], context: nil)
+        
+        
+    }
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == #keyPath(captureDevice.lensPosition) {
+            // Update Time Label
+            
+                print(captureDevice.lensPosition)
+        
+        }
     }
     
+    
     func beginSession(){
-        //it could be problem, so use do try, (camera permission)
         do{
             let captureDeviceInput = try AVCaptureDeviceInput(device: captureDevice)
             captureSession.addInput(captureDeviceInput)
@@ -66,8 +97,6 @@ class CameraController:NSObject{
         if captureSession.canAddOutput(capturePhotoOutput){
             captureSession.addOutput(capturePhotoOutput)
         }
-        
-        
         
         captureSession.commitConfiguration()
         captureSession.startRunning()
@@ -116,7 +145,6 @@ class CameraController:NSObject{
             capturePhotoOutput.capturePhoto(with: photoSettings, delegate: cameraBrain)
             
         }
-        
         
     }
     
@@ -232,7 +260,7 @@ class PhotoLibrary {
         let theCount = fetchResult.count
         
         for index in 0...5 {
-            
+            if(theCount-index<1) {break}
             //for index in 0..<fetchResult.count {
             imgManager.requestImage(for: fetchResult.object(at: theCount-index-1) as PHAsset, targetSize: UIScreen.main.bounds.size, contentMode: PHImageContentMode.aspectFill, options: requestOptions) { (image, _) in
                 
@@ -240,6 +268,9 @@ class PhotoLibrary {
                     resultArray.append(image)
                 }
             }
+        }
+        while(resultArray.count<6){
+            resultArray.append(UIImage())
         }
         return resultArray
     }
