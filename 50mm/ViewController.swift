@@ -40,7 +40,11 @@ class ViewController: UIViewController {
         
         
     }
+    
+    
+    @IBOutlet weak var caliperView: UIImageView!
 
+    @IBOutlet weak var DOFBarView: UIImageView!
     @IBOutlet weak var focusConfirm: UIView!
     @IBOutlet weak var ImageReviewThumbStack: UIStackView!
     @IBOutlet weak var outputSetting: UIButton!
@@ -124,9 +128,25 @@ class ViewController: UIViewController {
         focusConfirm.layer.opacity = 0
         
         updateThumbNail()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        print(caliperView.layer.position)
+        print(DOFBarView.layer.position)
+        // Do any additional setup after loading the view, typically from a nib.  
+        addObserver(self, forKeyPath: #keyPath(cameraController.captureDevice.lensPosition), options:[.new, .old], context: nil)
+        
     }
-    
+
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == #keyPath(cameraController.captureDevice.lensPosition) {
+            // Update Time Label
+            //print(captureDevice.lensPosition)
+            
+            DOFBarView.layer.transform = CATransform3DMakeTranslation(0,  CGFloat(Float(DOFBarView.layer.bounds.height) * (cameraController.captureDevice.lensPosition-0.5)), 0)
+        }
+    }
+
+
+
     func updateThumbNail(){
         reviewThumbView.image = cameraController.recentImages?.first
     
@@ -147,8 +167,7 @@ class ViewController: UIViewController {
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        cameraController.changeLensPosition(to:1.0)
-        
+        //cameraController.changeLensPosition(to:1.0)
         
         if(reviewThumbView.bounds.contains((touches.first?.location(in: reviewThumbView))!)){
             

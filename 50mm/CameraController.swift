@@ -17,7 +17,7 @@ class CameraController:NSObject{
     private var captureSession = AVCaptureSession()
     private var viewFinderLayer : AVCaptureVideoPreviewLayer?
     //@objc private var captureDevice :AVCaptureDevice!
-    @objc private var captureDevice :AVCaptureDevice!
+    @objc public var captureDevice :AVCaptureDevice!
     
     private var capturePhotoOutput = AVCapturePhotoOutput()
     private var frameLineView: UIView?
@@ -63,7 +63,7 @@ class CameraController:NSObject{
         
         recentImages = PhotoLibrary().getAllPhotos()
         
-        addObserver(self, forKeyPath: #keyPath(captureDevice.lensPosition), options:[.new, .old], context: nil)
+        //addObserver(self, forKeyPath: #keyPath(captureDevice.lensPosition), options:[.new, .old], context: nil)
         
         
     }
@@ -71,7 +71,7 @@ class CameraController:NSObject{
         if keyPath == #keyPath(captureDevice.lensPosition) {
             // Update Time Label
             
-                print(captureDevice.lensPosition)
+                //print(captureDevice.lensPosition)
         
         }
     }
