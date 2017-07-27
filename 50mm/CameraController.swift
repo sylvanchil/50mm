@@ -24,6 +24,7 @@ class CameraController:NSObject{
     
     public var recentImages:[UIImage]?
 
+    public var neetToUpdateCachePhoto = true
     
     //let photoLibrary = PhotoLibrary()
     

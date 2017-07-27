@@ -34,7 +34,7 @@ class CameraBrain:NSObject{
     private var captureModeIndex = 0
 
     private var deviceName :String?
-    
+    public var lastImage: UIImage?
     
     
     var photoSampleBuffer: CMSampleBuffer?
@@ -178,6 +178,9 @@ extension CameraBrain : AVCapturePhotoCaptureDelegate{
                 , width: width, height: height))
  
             finalImage = UIImage(cgImage: (finalImage?.cgImage)!, scale: (finalImage?.scale)!, orientation: UIImageOrientation.up)
+            
+            self.lastImage = finalImage
+            
             UIImageWriteToSavedPhotosAlbum(finalImage!, nil, nil, nil)
             
         }
@@ -245,6 +248,7 @@ extension CameraBrain : AVCapturePhotoCaptureDelegate{
                 return
             }
             
+            /*
             guard let jpegData = AVCapturePhotoOutput.jpegPhotoDataRepresentation(
                 forJPEGSampleBuffer: photoSampleBuffer,
                 previewPhotoSampleBuffer: previewSampleBuffer)
@@ -253,6 +257,7 @@ extension CameraBrain : AVCapturePhotoCaptureDelegate{
                     completionHandler?(false, nil)
                     return
             }
+            */
             
             guard let dngData = AVCapturePhotoOutput.dngPhotoDataRepresentation(
                 forRawSampleBuffer: rawSampleBuffer,
@@ -268,8 +273,6 @@ extension CameraBrain : AVCapturePhotoCaptureDelegate{
             let dngFileURL = NSURL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("\(UUID().uuidString).dng")!
             
             
-            
-            
             do {
                 try dngData.write(to: dngFileURL, options: [])
             } catch let error as NSError {
@@ -282,7 +285,10 @@ extension CameraBrain : AVCapturePhotoCaptureDelegate{
                 let creationRequest = PHAssetCreationRequest.forAsset()
                 let creationOptions = PHAssetResourceCreationOptions()
                 creationOptions.shouldMoveFile = true
-                creationRequest.addResource(with: .photo, data: jpegData, options: nil)
+                
+                
+                creationRequest.addResource(with: .photo , data: UIImageJPEGRepresentation(self.lastImage!, 1.0)!, options: nil)
+                //creationRequest.addResource(with: .photo, data: jpegData, options: nil)
                 creationRequest.addResource(with: .alternatePhoto, fileURL: dngFileURL, options: creationOptions)
             }, completionHandler: completionHandler)
         })
