@@ -98,7 +98,12 @@ class ViewController: UIViewController {
     
     func reloadFrameLine(){
         if(abs(cameraController.getCroppingRatio()-1) < 0.01){
-            self.frameLineview.layer.opacity = 0
+            
+            self.frameLineview.layer.opacity = 0.3
+            let ratio = cameraController.getCroppingRatio()
+            self.frameLineview.layer.borderWidth = CGFloat(3.0/ratio)
+            self.frameLineview.layer.transform = CATransform3DMakeScale(CGFloat(ratio) ,CGFloat(ratio) ,CGFloat(ratio))
+            //self.frameLineview.layer.opacity = 0
         }else{
             
             self.frameLineview.layer.opacity = 0.3
@@ -134,8 +139,8 @@ class ViewController: UIViewController {
         
         updateThumbNail()
         
-        print(caliperView.layer.position)
-        print(DOFBarView.layer.position)
+        //print(caliperView.layer.position)
+        //print(DOFBarView.layer.position)
         //DOFBarOriginPosition = DOFBarView.layer.position
         // Do any additional setup after loading the view, typically from a nib.  
         addObserver(self, forKeyPath: #keyPath(cameraController.captureDevice.lensPosition), options:[.new, .old], context: nil)
