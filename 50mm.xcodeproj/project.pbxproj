@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B29D2AE1F311E3B00BD4937 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 3B29D2AD1F311E3B00BD4937 /* README.md */; };
 		3BC206F61F20A9CF00CC511F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC206F51F20A9CF00CC511F /* AppDelegate.swift */; };
 		3BC206F81F20A9CF00CC511F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC206F71F20A9CF00CC511F /* ViewController.swift */; };
 		3BC206FB1F20A9CF00CC511F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3BC206F91F20A9CF00CC511F /* Main.storyboard */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3B29D2AD1F311E3B00BD4937 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3BC206F21F20A9CF00CC511F /* 50mm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 50mm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BC206F51F20A9CF00CC511F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3BC206F71F20A9CF00CC511F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 				3BEE38151F22995100205BEC /* CameraController.swift */,
 				3BEE38171F22A20D00205BEC /* CameraBrain.swift */,
 				3BC206FF1F20A9CF00CC511F /* Assets.xcassets */,
+				3B29D2AD1F311E3B00BD4937 /* README.md */,
 			);
 			path = 50mm;
 			sourceTree = "<group>";
@@ -154,6 +157,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B29D2AE1F311E3B00BD4937 /* README.md in Sources */,
 				3BC206F81F20A9CF00CC511F /* ViewController.swift in Sources */,
 				3BC206FE1F20A9CF00CC511F /* _0mm.xcdatamodeld in Sources */,
 				3BEE38181F22A20D00205BEC /* CameraBrain.swift in Sources */,
