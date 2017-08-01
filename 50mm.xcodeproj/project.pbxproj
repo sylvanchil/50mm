@@ -19,7 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3B29D2AD1F311E3B00BD4937 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		3B29D2AD1F311E3B00BD4937 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = 50mm/README.md; sourceTree = "<group>"; };
 		3BC206F21F20A9CF00CC511F /* 50mm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 50mm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BC206F51F20A9CF00CC511F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3BC206F71F20A9CF00CC511F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -48,6 +48,7 @@
 			children = (
 				3BC206F41F20A9CF00CC511F /* 50mm */,
 				3BC206F31F20A9CF00CC511F /* Products */,
+				3B29D2AD1F311E3B00BD4937 /* README.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -68,7 +69,6 @@
 				3BEE38151F22995100205BEC /* CameraController.swift */,
 				3BEE38171F22A20D00205BEC /* CameraBrain.swift */,
 				3BC206FF1F20A9CF00CC511F /* Assets.xcassets */,
-				3B29D2AD1F311E3B00BD4937 /* README.md */,
 			);
 			path = 50mm;
 			sourceTree = "<group>";
