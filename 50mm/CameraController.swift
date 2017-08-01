@@ -95,20 +95,33 @@ class CameraController:NSObject{
     
     
     func outputToUIView(to UIViewLayer : UIView){
+        
+        
         viewFinderLayer = AVCaptureVideoPreviewLayer(session:captureSession)
         viewFinderLayer?.connection.videoOrientation = AVCaptureVideoOrientation.landscapeRight
         UIViewLayer.layer.insertSublayer(self.viewFinderLayer!, at:0)
-        let frameRect = UIViewLayer.superview?.layer.bounds
-        viewFinderLayer?.frame = CGRect(x: 0, y: 0, width: (frameRect?.height)!/3*4, height: (frameRect?.height)!)
-  
+        //print(UIViewLayer.bounds.size)
+        
+        //let frameRect = UIViewLayer.superview?.layer.bounds
+        //viewFinderLayer?.frame = CGRect(x: 0, y: 0, width: (frameRect?.height)!/3*4, height: (frameRect?.height)!)
+        viewFinderLayer?.frame = UIViewLayer.layer.bounds
+        
+        
+        //print(viewFinderLayer?.frame.size ?? CGSize(width: 0, height: 0) )
     }
     
     public func toggleFlash(){
-        cameraBrain.toggleFlash()
+        if(captureDevice.isFlashAvailable){
+            cameraBrain.toggleFlash()
+        }
     }
     
     public func usingFlash()->Bool{
+        if(captureDevice.isFlashAvailable){
         return cameraBrain.flashIsOn() ? true : false
+        }else{
+            return false
+        }
     }
     
     public func captureImage(){
@@ -200,13 +213,14 @@ class CameraController:NSObject{
         let modelName = UIDevice.current.modelName
         
         switch modelName {
+        case "iPhone 4", "iPhone 4s": return 35
         case "iPhone 5", "iPhone 5c": return 33
         case "iPhone 5s": return 30
         case "iPhone 6","iPhone 6 Plus","iPhone 6s","iPhone 6s Plus","iPhone 7","iPhone SE": return 29
             
         case "iPhone 7 Plus" : return 28
         default:
-            return 0
+            return 30
         }
     }
     

@@ -12,12 +12,9 @@ import UIKit
 import Photos
 
 class CameraBrain:NSObject{
-
-    //manual focus with DOF table
-    //manual exposure
-    //focus confirm
     
-    //let photoLibrary = PhotoLibrary()
+    //ipad layout(3.5 inch layout)
+    //ipad flash mode (not support)
     
     let lengthOfFilm = 36.0
     let widthOfFilm = 24.0
@@ -59,6 +56,7 @@ class CameraBrain:NSObject{
     }
     
     public func toggleFlash(){
+        
         flashMode = !flashMode
     }
     public func flashIsOn()->Bool{

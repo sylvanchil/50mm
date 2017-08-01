@@ -122,14 +122,26 @@ class ViewController: UIViewController {
         
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        cameraController.prepareCamera()
-        cameraController.beginSession()
+    override func viewDidAppear(_ animated: Bool) {
         cameraController.outputToUIView(to: capturePreview)
         
+        
+    }
+    
+    
+    override func viewDidLoad() {
+        
+        
+        super.viewDidLoad()
+        super.viewDidLayoutSubviews()
+
+        
+        cameraController.prepareCamera()
+        cameraController.beginSession()
+        //cameraController.outputToUIView(to: capturePreview)
+        
         addFrameLine()
+        
         reloadUI()
         
         ImageReviewThumbStack.layer.opacity = 0
