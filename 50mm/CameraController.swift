@@ -46,7 +46,7 @@ class CameraController:NSObject{
             }catch{
                 
             }
-            captureDevice.setFocusModeLockedWithLensPosition(position , completionHandler: nil)
+            captureDevice.setFocusModeLocked(lensPosition: position , completionHandler: nil)
             captureDevice.unlockForConfiguration()
         }
         
@@ -56,10 +56,10 @@ class CameraController:NSObject{
     func prepareCamera(){
         cameraBrain.setDefaultFocalLength(using: self.defaultFocalLengthByDevice())
         
-        captureSession.sessionPreset = AVCaptureSessionPresetPhoto
-        if let availiableDevices = AVCaptureDeviceDiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaTypeVideo, position: .back).devices{
-            captureDevice = availiableDevices.first
-        }
+        captureSession.sessionPreset = AVCaptureSession.Preset.photo
+        let availiableDevices = AVCaptureDevice.DiscoverySession(deviceTypes: [AVCaptureDevice.DeviceType.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .back).devices
+        captureDevice = availiableDevices.first
+        
         
         recentImages = PhotoLibrary().getAllPhotos()
         
@@ -77,7 +77,7 @@ class CameraController:NSObject{
         }
         
         let dataOutput = AVCaptureVideoDataOutput()
-        dataOutput.videoSettings=[(kCVPixelBufferPixelFormatTypeKey as NSString):NSNumber(value:kCMPixelFormat_32BGRA)]
+        dataOutput.videoSettings=[((kCVPixelBufferPixelFormatTypeKey as NSString) as String):NSNumber(value:kCMPixelFormat_32BGRA)]
         dataOutput.alwaysDiscardsLateVideoFrames = true
         
         if captureSession.canAddOutput(dataOutput){
@@ -98,7 +98,7 @@ class CameraController:NSObject{
         
         
         viewFinderLayer = AVCaptureVideoPreviewLayer(session:captureSession)
-        viewFinderLayer?.connection.videoOrientation = AVCaptureVideoOrientation.landscapeRight
+        viewFinderLayer?.connection?.videoOrientation = AVCaptureVideoOrientation.landscapeRight
         UIViewLayer.layer.insertSublayer(self.viewFinderLayer!, at:0)
         //print(UIViewLayer.bounds.size)
         
@@ -129,21 +129,24 @@ class CameraController:NSObject{
         if(cameraBrain.currentOutputSettingIndex()==0){
             let photoSetting:AVCapturePhotoSettings =  AVCapturePhotoSettings()
             
-            photoSetting.flashMode = cameraBrain.flashIsOn() ? AVCaptureFlashMode.on : AVCaptureFlashMode.off
+            photoSetting.flashMode = cameraBrain.flashIsOn() ? AVCaptureDevice.FlashMode.on : AVCaptureDevice.FlashMode.off
             
             capturePhotoOutput.capturePhoto(with: photoSetting, delegate: cameraBrain )
             
             
         }else{
             let rawFormatType = kCVPixelFormatType_14Bayer_RGGB
-            guard capturePhotoOutput.availableRawPhotoPixelFormatTypes.contains(NSNumber(value: rawFormatType))
+            guard capturePhotoOutput.__availableRawPhotoPixelFormatTypes.contains(NSNumber(value: rawFormatType))
+                //__availableRawPhotoPixelFormatTypes, using prececing __
+                // see posthttps://forums.developer.apple.com/thread/87762
+                //
                 else { return }
             
             let photoSettings = AVCapturePhotoSettings(rawPixelFormatType: rawFormatType,
                                                        processedFormat: [AVVideoCodecKey : AVVideoCodecJPEG])
             
             photoSettings.isAutoStillImageStabilizationEnabled = false
-            photoSettings.flashMode = cameraBrain.flashIsOn() ? AVCaptureFlashMode.on : AVCaptureFlashMode.off
+            photoSettings.flashMode = cameraBrain.flashIsOn() ? AVCaptureDevice.FlashMode.on : AVCaptureDevice.FlashMode.off
             
             capturePhotoOutput.capturePhoto(with: photoSettings, delegate: cameraBrain)
             
@@ -161,11 +164,11 @@ class CameraController:NSObject{
             }
             if device.isFocusPointOfInterestSupported {
                 device.focusPointOfInterest = focusPoint
-                device.focusMode = AVCaptureFocusMode.autoFocus
+                device.focusMode = AVCaptureDevice.FocusMode.autoFocus
             }
             if device.isExposurePointOfInterestSupported {
                 device.exposurePointOfInterest = focusPoint
-                device.exposureMode = AVCaptureExposureMode.autoExpose
+                device.exposureMode = AVCaptureDevice.ExposureMode.autoExpose
             }
             device.unlockForConfiguration()
             

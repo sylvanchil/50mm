@@ -12,7 +12,7 @@ import Photos
 
 class ViewController: UIViewController {
     
-    var cameraController = CameraController()
+    @objc var cameraController = CameraController()
     var reviewing = false
     var adjustingExposure = false
     var touchOriginPosition = CGPoint(x:0,y:0)
@@ -295,12 +295,12 @@ class ViewController: UIViewController {
                 }catch{
                 
                 }
-                cameraController.captureDevice.setFocusModeLockedWithLensPosition(newLensPosition, completionHandler: nil)
+                cameraController.captureDevice.setFocusModeLocked(lensPosition: newLensPosition, completionHandler: nil)
                 cameraController.captureDevice.unlockForConfiguration()
             }
             
         }else{
-            if(cameraController.captureDevice.isExposureModeSupported(AVCaptureExposureMode.locked) && adjustingExposure){
+            if(cameraController.captureDevice.isExposureModeSupported(AVCaptureDevice.ExposureMode.locked) && adjustingExposure){
                 
         
             let newLocation = touches.first?.location(in: capturePreview)

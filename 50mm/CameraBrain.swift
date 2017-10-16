@@ -134,7 +134,7 @@ struct angleOfViews{
 
 extension CameraBrain : AVCapturePhotoCaptureDelegate{
     
-    public func capture(_ captureOutput: AVCapturePhotoOutput, didFinishProcessingPhotoSampleBuffer photoSampleBuffer: CMSampleBuffer?, previewPhotoSampleBuffer: CMSampleBuffer?, resolvedSettings: AVCaptureResolvedPhotoSettings, bracketSettings: AVCaptureBracketedStillImageSettings?, error: Error?){
+    public func photoOutput(_ captureOutput: AVCapturePhotoOutput, didFinishProcessingPhoto photoSampleBuffer: CMSampleBuffer?, previewPhoto previewPhotoSampleBuffer: CMSampleBuffer?, resolvedSettings: AVCaptureResolvedPhotoSettings, bracketSettings: AVCaptureBracketedStillImageSettings?, error: Error?){
         if let photoSampleBuffer = photoSampleBuffer {
             
             let photoData = AVCapturePhotoOutput.jpegPhotoDataRepresentation(forJPEGSampleBuffer: photoSampleBuffer, previewPhotoSampleBuffer: previewPhotoSampleBuffer)
@@ -169,7 +169,7 @@ extension CameraBrain : AVCapturePhotoCaptureDelegate{
         
     }
     
-    public func capture(_ captureOutput: AVCapturePhotoOutput, didFinishProcessingRawPhotoSampleBuffer rawSampleBuffer: CMSampleBuffer?, previewPhotoSampleBuffer: CMSampleBuffer?, resolvedSettings: AVCaptureResolvedPhotoSettings, bracketSettings: AVCaptureBracketedStillImageSettings?, error: Error?) {
+    public func photoOutput(_ captureOutput: AVCapturePhotoOutput, didFinishProcessingRawPhoto rawSampleBuffer: CMSampleBuffer?, previewPhoto previewPhotoSampleBuffer: CMSampleBuffer?, resolvedSettings: AVCaptureResolvedPhotoSettings, bracketSettings: AVCaptureBracketedStillImageSettings?, error: Error?) {
         
         guard error == nil, let rawSampleBuffer = rawSampleBuffer else {
             print("Error capturing RAW photo:\(String(describing: error))")
@@ -184,8 +184,8 @@ extension CameraBrain : AVCapturePhotoCaptureDelegate{
     
     
     
-    func capture(_ captureOutput: AVCapturePhotoOutput,
-                 didFinishCaptureForResolvedSettings resolvedSettings: AVCaptureResolvedPhotoSettings,
+    func photoOutput(_ captureOutput: AVCapturePhotoOutput,
+                 didFinishCaptureFor resolvedSettings: AVCaptureResolvedPhotoSettings,
                  error: Error?){
         print("finish chill")
         
@@ -268,31 +268,7 @@ extension CameraBrain : AVCapturePhotoCaptureDelegate{
         })
     }
     
-    
-    func photoOutput(_ output: AVCapturePhotoOutput,
-                     didFinishProcessingRawPhoto rawSampleBuffer: CMSampleBuffer?,
-                     previewPhoto previewPhotoSampleBuffer: CMSampleBuffer?,
-                     resolvedSettings: AVCaptureResolvedPhotoSettings,
-                     bracketSettings: AVCaptureBracketedStillImageSettings?,
-                     error: Error?){
-        print("just chill1")
-    }
-    
-    
-    func photoOutput(_ output: AVCapturePhotoOutput,
-                     didFinishProcessingPhotoSampleBuffer photoSampleBuffer: CMSampleBuffer?,
-                     previewPhotoSampleBuffer: CMSampleBuffer?,
-                     resolvedSettings: AVCaptureResolvedPhotoSettings,
-                     bracketSettings: AVCaptureBracketedStillImageSettings?,
-                     error: Error?){
-        print("just chill2")
-    }
-    
-    func photoOutput(_ output: AVCapturePhotoOutput,
-                     didFinishCaptureFor resolvedSettings: AVCaptureResolvedPhotoSettings,
-                     error: Error?){
-        print("just chill3")
-    }
+
     
 }
 
